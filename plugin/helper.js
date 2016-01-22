@@ -1,12 +1,12 @@
 export default function(path) {
   class BabelRootImportHelper {
 
-    root = global.rootPath || process.cwd()
+    root = global.rootPath || process.cwd();
 
     transformRelativeToRootPath(path, rootPathSuffix) {
-      if (this.hasTildeInString(path)) {
-        const withoutTilde = path.substring(2, path.length);
-        return `${this.root}${rootPathSuffix ? rootPathSuffix : ''}/${withoutTilde}`;
+      if (this.hasRoot(path)) {
+        const withoutRoot = path.substring(1, path.length);
+        return `${this.root}${rootPathSuffix ? rootPathSuffix : ''}/${withoutRoot}`;
       }
       if (typeof path === 'string') {
         return path;
@@ -14,17 +14,15 @@ export default function(path) {
       throw new Error('ERROR: No path passed');
     }
 
-    hasTildeInString(string) {
+    hasRoot(string) {
       let containsTilde = false;
 
-      if (typeof string === 'string') {
-        const firstTwoCharactersOfString = string.substring(0, 2);
-        if (firstTwoCharactersOfString === '~/') {
-          containsTilde = true;
-        }
+      if (typeof string !== 'string') {
+        return false;
       }
 
-      return containsTilde;
+      const firstChar = string.substring(0, 1);
+      return firstChar === '/';
     }
   }
 

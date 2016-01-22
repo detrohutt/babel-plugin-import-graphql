@@ -11,7 +11,7 @@ describe('Babel Root Import - Helper', () => {
 
       it('transforms given path relative root-path', () => {
         const rootPath = `${process.cwd()}/some/path`;
-        const result = BabelRootImportHelper().transformRelativeToRootPath('~/some/path');
+        const result = BabelRootImportHelper().transformRelativeToRootPath('/some/path');
         expect(result).to.equal(rootPath);
       });
 
@@ -37,7 +37,7 @@ describe('Babel Root Import - Helper', () => {
 
     it('transforms given path relative root-path', () => {
       const rootPath = `${process.cwd()}/some/path`;
-      const result = BabelRootImportHelper().transformRelativeToRootPath('~/some/path');
+      const result = BabelRootImportHelper().transformRelativeToRootPath('/some/path');
       expect(result).to.equal(rootPath);
     });
 
@@ -48,22 +48,23 @@ describe('Babel Root Import - Helper', () => {
     });
   });
 
-  describe('hasTildeInString', () => {
+
+  describe('hasRoot', () => {
     it('returns a boolean', () => {
-      const func = BabelRootImportHelper().hasTildeInString();
+      const func = BabelRootImportHelper().hasRoot();
       expect(func).to.be.a('boolean');
     });
 
-    it('check if a "~/" is at the beginning of the string', () => {
-      const withoutTilde = BabelRootImportHelper().hasTildeInString('some/path');
-      const withTilde = BabelRootImportHelper().hasTildeInString('~/some/path');
-      expect(withoutTilde).to.be.false;
-      expect(withTilde).to.be.true;
+    it('check if the string has "/" at the beginning', () => {
+      const withRoot = BabelRootImportHelper().hasRoot('/path');
+      const withoutRoot = BabelRootImportHelper().hasRoot('./some/path');
+      expect(withoutRoot).to.be.false;
+      expect(withRoot).to.be.true;
     });
 
-    it('returns false if no string is passed', () => {
-      const nothingPassed = BabelRootImportHelper().hasTildeInString();
-      const wrongTypePassed = BabelRootImportHelper().hasTildeInString([]);
+    it('returns false if no string passed', () => {
+      const nothingPassed = BabelRootImportHelper().hasRoot();
+      const wrongTypePassed = BabelRootImportHelper().hasRoot([]);
       expect(nothingPassed).to.be.false;
       expect(wrongTypePassed).to.be.false;
     });

@@ -5,7 +5,7 @@ describe('Babel Root Import - Plugin', () => {
   describe('Babel Plugin', () => {
     it('transforms the relative path into an absolute path', () => {
       const targetRequire = `${process.cwd()}/some/example.js`;
-      const transformedCode = babel.transform("import SomeExample from '~/some/example.js';", {
+      const transformedCode = babel.transform("import SomeExample from '/some/example.js';", {
         plugins: [BabelRootImportPlugin]
       });
 
@@ -14,7 +14,7 @@ describe('Babel Root Import - Plugin', () => {
 
     it('transforms the relative path into an absolute path with the configured root-path', () => {
       const targetRequire = `some/custom/root/some/example.js`;
-      const transformedCode = babel.transform("import SomeExample from '~/some/example.js';", {
+      const transformedCode = babel.transform("import SomeExample from '/some/example.js';", {
         plugins: [[
           BabelRootImportPlugin, {
             rootPathSuffix: 'some/custom/root'

@@ -13,7 +13,7 @@ export default function({ types: t }) {
             '/' + state.opts.rootPathSuffix.replace(/^(\/)|(\/)$/g, '') :
                 '';
 
-            if(BabelRootImportHelper().hasTildeInString(givenPath)) {
+            if(BabelRootImportHelper().hasRoot(givenPath)) {
               path.node.source.value = BabelRootImportHelper().transformRelativeToRootPath(givenPath, rootPathSuffix);
             }
           }
