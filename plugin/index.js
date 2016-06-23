@@ -22,5 +22,15 @@ export default function({ types: t }) {
     }
   }
 
+  // Here's we detect the use of Meteor and send a dummy plugin.
+  // That's because, Meteor already do this for us.
+  //  global.meteorBabelHelpers is something we can see when
+  //  running inside Meteor.
+  if (global.meteorBabelHelpers) {
+    return {
+      visitor: {}
+    };
+  }
+
   return new BabelRootImport();
 }
