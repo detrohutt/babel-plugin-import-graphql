@@ -43,8 +43,3 @@ If you want a custom root because for example all your files are in the src/js f
 
 ## Motivate
 If you like this project just give it a star :) I like stars.
-
-## v1.0.0
-
-Forked <https://github.com/michaelzoidl/babel-root-import> use `/` instead of '~/' to define the root.
-This is to go with the Meteor's ES2015 module implementation.
