@@ -12,7 +12,7 @@ import SomeExample from '/some/example.js';
 
 ## Install
 ```
-npm install babel-root-slash-import --save-dev
+npm install babel-plugin-inline-import --save-dev
 ```
 
 ## Use
@@ -20,13 +20,13 @@ Add a `.babelrc` file and write:
 ```javascript
 {
   "plugins": [
-    "babel-root-slash-import"
+    "babel-plugin-inline-import"
   ]
 }
 ```
 or pass the plugin with the plugins-flag on CLI
 ```
-babel-node myfile.js --plugins babel-root-slash-import
+babel-node myfile.js --plugins babel-plugin-inline-import
 ```
 
 ## Extras
@@ -34,7 +34,7 @@ If you want a custom root because for example all your files are in the src/js f
 ```javascript
 {
   "plugins": [
-    ["babel-root-slash-import", {
+    ["babel-plugin-inline-import", {
       "rootPathSuffix": "src/js"
     }]
   ]
