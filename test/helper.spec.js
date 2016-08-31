@@ -2,71 +2,53 @@ import BabelRootImportHelper from '../plugin/helper';
 
 describe('Babel Inline Import - Helper', () => {
 
-  describe('transformRelativeToRootPath', () => {
-      it('returns a string', () => {
-        console.log(BabelRootImportHelper().transformRelativeToRootPath(''));
-        const func = BabelRootImportHelper().transformRelativeToRootPath('');
-        expect(func).to.be.a('string');
+  describe('Class', () => {
+    it('returns the default extensions', () => {
+      expect(BabelRootImportHelper.extensions).to.deep.equal([
+        '.raw',
+        '.text',
+        '.graphql',
+      ]);
+    });
+  });
+
+  describe('shouldBeInlined', () => {
+      it('accepts a default extension', () => {
+        const shouldIt = BabelRootImportHelper.shouldBeInlined('example.raw');
+        expect(shouldIt).to.be.true;
       });
 
-      it('transforms given path relative root-path', () => {
-        const rootPath = `${process.cwd()}/some/path`;
-        const result = BabelRootImportHelper().transformRelativeToRootPath('/some/path');
-        expect(result).to.equal(rootPath);
+      it('rejects a non default extension', () => {
+        const shouldIt = BabelRootImportHelper.shouldBeInlined('example.js');
+        expect(shouldIt).to.be.false;
       });
 
-      it('throws error if no string is passed', () => {
+      it('accepts a user defined extension', () => {
+        const shouldIt = BabelRootImportHelper.shouldBeInlined('example.python', ['.python']);
+        expect(shouldIt).to.be.true;
+      });
+
+      it('rejects a non user defined extension', () => {
+        const shouldIt = BabelRootImportHelper.shouldBeInlined('example.raw', ['.python']);
+        expect(shouldIt).to.be.false;
+      });
+
+      it('throws error if no array or string is passed as extensions', () => {
         expect(() => {
-          BabelRootImportHelper().transformRelativeToRootPath();
+          BabelRootImportHelper.shouldBeInlined('example.raw', true);
         }).to.throw(Error);
       });
   });
 
-  describe('Class', () => {
-    it('returns the root path', () => {
-      const rootByProcess = process.cwd();
-      expect(BabelRootImportHelper().root).to.equal(rootByProcess);
-    });
-  });
-
-  describe('transformRelativeToRootPath', () => {
-    it('returns a string', () => {
-      const func = BabelRootImportHelper().transformRelativeToRootPath('');
-      expect(func).to.be.a('string');
-    });
-
-    it('transforms given path relative root-path', () => {
-      const rootPath = `${process.cwd()}/some/path`;
-      const result = BabelRootImportHelper().transformRelativeToRootPath('/some/path');
-      expect(result).to.equal(rootPath);
-    });
-
-    it('throws error if no string is passed', () => {
+  describe('getContents', () => {
+    it('throws error if no reference is specified', () => {
       expect(() => {
-        BabelRootImportHelper().transformRelativeToRootPath();
+        BabelRootImportHelper.getContents('./fixtures/example.raw');
       }).to.throw(Error);
     });
-  });
 
-
-  describe('hasRoot', () => {
-    it('returns a boolean', () => {
-      const func = BabelRootImportHelper().hasRoot();
-      expect(func).to.be.a('boolean');
-    });
-
-    it('check if the string has "/" at the beginning', () => {
-      const withRoot = BabelRootImportHelper().hasRoot('/path');
-      const withoutRoot = BabelRootImportHelper().hasRoot('./some/path');
-      expect(withoutRoot).to.be.false;
-      expect(withRoot).to.be.true;
-    });
-
-    it('returns false if no string passed', () => {
-      const nothingPassed = BabelRootImportHelper().hasRoot();
-      const wrongTypePassed = BabelRootImportHelper().hasRoot([]);
-      expect(nothingPassed).to.be.false;
-      expect(wrongTypePassed).to.be.false;
+    it('returns file content', () => {
+      expect(BabelRootImportHelper.getContents('./fixtures/example.raw', __filename)).to.equal('a raw content\n');
     });
   });
 });
