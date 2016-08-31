@@ -1,6 +1,6 @@
 import BabelRootImportHelper from '../plugin/helper';
 
-describe('Babel Root Import - Helper', () => {
+describe('Babel Inline Import - Helper', () => {
 
   describe('transformRelativeToRootPath', () => {
       it('returns a string', () => {

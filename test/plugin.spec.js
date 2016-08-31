@@ -1,12 +1,12 @@
-import BabelRootImportPlugin from '../plugin';
+import BabelInlineImportPlugin from '../plugin';
 import * as babel from 'babel-core';
 
-describe('Babel Root Import - Plugin', () => {
+describe('Babel Inline Import - Plugin', () => {
   describe('Babel Plugin', () => {
     it('transforms the relative path into an absolute path', () => {
       const targetRequire = `${process.cwd()}/some/example.js`;
       const transformedCode = babel.transform("import SomeExample from '/some/example.js';", {
-        plugins: [BabelRootImportPlugin]
+        plugins: [BabelInlineImportPlugin]
       });
 
       expect(transformedCode.code).to.contain(targetRequire);
@@ -16,7 +16,7 @@ describe('Babel Root Import - Plugin', () => {
       const targetRequire = `some/custom/root/some/example.js`;
       const transformedCode = babel.transform("import SomeExample from '/some/example.js';", {
         plugins: [[
-          BabelRootImportPlugin, {
+          BabelInlineImportPlugin, {
             rootPathSuffix: 'some/custom/root'
           }
         ]]
