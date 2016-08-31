@@ -1,12 +1,11 @@
 {
   "name": "babel-plugin-inline-import",
-  "version": "2.0.0",
+  "version": "2.0.1-beta.1",
   "description": "Babel plugin to make raw files importable",
   "author": "Victor Duarte (Quadric ApS) <contact@quadric.net>",
   "license": "MIT",
-  "main": "index.js",
+  "main": "build/index.js",
   "files": [
-    "index.js",
     "build"
   ],
   "keywords": [
@@ -23,10 +22,9 @@
     "test": "mocha test/*.spec.js --require config/mocha.js --compilers js:babel-core/register",
     "test-watch": "mocha test/*.spec.js --require config/mocha.js --compilers js:babel-core/register --watch",
     "lint-js": "eslint plugin",
-    "compile": "babel -d build/ plugin/"
+    "prepublish": "babel -d build/ plugin/"
   },
   "dependencies": {
-    "babel": "^6.5.2",
     "require-resolve": "0.0.2"
   },
   "devDependencies": {
