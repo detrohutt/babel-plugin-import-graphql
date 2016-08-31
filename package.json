@@ -16,7 +16,7 @@
     "extension",
     "wrap",
     "import",
-    "inline",
+    "inline"
   ],
   "repository": "Quadric/babel-plugin-inline-import",
   "scripts": {

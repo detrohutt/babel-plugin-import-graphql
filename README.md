@@ -7,7 +7,6 @@ It is good e.g. for importing `*.graphql` files into your code.
 Before (without Babel-Inline-Import):
 ```javascript
 // server.js
-import { apolloServer } from 'apollo-server';
 
 // bad syntax highlighting, no syntax checking
 const typeDefinitions = `
@@ -19,8 +18,7 @@ schema {
 }
 `;
 
-apolloServer({
-  graphiql: true,
+graphQLServer({
   schema: [typeDefinitions],
   ...
 });
@@ -39,11 +37,9 @@ schema {
 
 ```javascript
 // server.js
-import { apolloServer } from 'apollo-server';
 import schema from '/some/schema.graphql';
 
-apolloServer({
-  graphiql: true,
+graphQLServer({
   schema: [schema],
   ...
 });
