@@ -1,7 +1,7 @@
-import BabelRootImportHelper from './helper';
+import BabelInlineImportHelper from './helper';
 
 export default function({ types: t }) {
-  class BabelRootImport {
+  class BabelInlineImport {
     constructor() {
       return {
         visitor: {
@@ -10,9 +10,9 @@ export default function({ types: t }) {
             const reference = state && state.file && state.file.opts.filename;
             const extensions = state && state.opts && state.opts.extensions;
 
-            if(BabelRootImportHelper.shouldBeInlined(givenPath, extensions)) {
+            if(BabelInlineImportHelper.shouldBeInlined(givenPath, extensions)) {
               const id = path.node.specifiers[0].local.name;
-              const content = BabelRootImportHelper.getContents(givenPath, reference);
+              const content = BabelInlineImportHelper.getContents(givenPath, reference);
               const variable = t.variableDeclarator(t.identifier(id), t.stringLiteral(content));
 
               path.replaceWith(
@@ -25,5 +25,5 @@ export default function({ types: t }) {
     }
   }
 
-  return new BabelRootImport();
+  return new BabelInlineImport();
 }

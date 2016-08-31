@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import requireResolve from 'require-resolve';
 
-export default class BabelRootImportHelper {
+export default class BabelInlineImportHelper {
   static extensions = [
     '.raw',
     '.text',
@@ -12,7 +12,7 @@ export default class BabelRootImportHelper {
   static shouldBeInlined(givenPath, extensions) {
     const accept = (typeof extensions === 'string')
       ? [extensions]
-      : (extensions || BabelRootImportHelper.extensions);
+      : (extensions || BabelInlineImportHelper.extensions);
 
     for (const extension of accept) {
       if (givenPath.endsWith(extension)) {
