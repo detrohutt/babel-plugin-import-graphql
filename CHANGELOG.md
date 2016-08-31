@@ -1,5 +1,9 @@
 # ChangeLog
 
+### v2.0.1
+
+Add forgotten `build` files to npm package.
+
 ### v2.0.0
 
 Change approach. Replace `import` statements by inline content, instead of trying to export raw content according to JS standards.
