@@ -27,13 +27,13 @@ describe('Babel Inline Import - Plugin', () => {
       expect(transformedCode.code).to.equal(`var SomeExample = 'print 1 + 1\\n';`);
     });
 
-    it('doesn`t act when importing with destructuring', () => {
-      const transformedCode = babel.transform("import { SomeExample, AnotherExample } from './fixtures/example.raw';", {
-        filename: __filename,
-        plugins: [BabelInlineImportPlugin]
-      });
-
-      expect(transformedCode.code).to.equal("import { SomeExample, AnotherExample } from './fixtures/example.raw';");
+    it('throws error when importing with destructuring', () => {
+      expect(() => {
+        babel.transform("import { SomeExample, AnotherExample } from './fixtures/example.raw';", {
+          filename: __filename,
+          plugins: [BabelInlineImportPlugin]
+        });
+      }).to.throw(Error);
     });
   });
 });
