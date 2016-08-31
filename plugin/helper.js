@@ -1,30 +1,34 @@
-export default function(path) {
-  class BabelRootImportHelper {
+import fs from 'fs';
+import path from 'path';
+import requireResolve from 'require-resolve';
 
-    root = global.rootPath || process.cwd();
+export default class BabelRootImportHelper {
+  static extensions = [
+    '.raw',
+    '.text',
+    '.graphql',
+  ];
 
-    transformRelativeToRootPath(path, rootPathSuffix) {
-      if (this.hasRoot(path)) {
-        const withoutRoot = path.substring(1, path.length);
-        return `${this.root}${rootPathSuffix ? rootPathSuffix : ''}/${withoutRoot}`;
+  static shouldBeInlined(givenPath, extensions) {
+    const accept = (typeof extensions === 'string')
+      ? [extensions]
+      : (extensions || BabelRootImportHelper.extensions);
+
+    for (const extension of accept) {
+      if (givenPath.endsWith(extension)) {
+        return true;
       }
-      if (typeof path === 'string') {
-        return path;
-      }
-      throw new Error('ERROR: No path passed');
     }
 
-    hasRoot(string) {
-      let containsTilde = false;
-
-      if (typeof string !== 'string') {
-        return false;
-      }
-
-      const firstChar = string.substring(0, 1);
-      return firstChar === '/';
-    }
+    return false;
   }
 
-  return new BabelRootImportHelper();
+  static getContents(givenPath, reference) {
+    if (!reference) {
+      throw new Error('"reference" argument must be specified');
+    }
+
+    const mod = requireResolve(givenPath, path.resolve(reference));
+    return fs.readFileSync(mod.src).toString();
+  }
 }
