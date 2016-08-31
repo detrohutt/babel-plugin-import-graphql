@@ -9,6 +9,15 @@
     "index.js",
     "build"
   ],
+  "keywords": [
+    "babel-plugin",
+    "graphql",
+    "raw",
+    "extension",
+    "wrap",
+    "import",
+    "inline",
+  ],
   "repository": "Quadric/babel-plugin-inline-import",
   "scripts": {
     "test": "mocha test/*.spec.js --require config/mocha.js --compilers js:babel-core/register",
