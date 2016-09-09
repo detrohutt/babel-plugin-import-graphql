@@ -1,5 +1,9 @@
 # ChangeLog
 
+### v2.0.3
+
+Visit node on `exit` instead of `enter`. It allows other plugins like [babel-root-slash-import](https://github.com/mantrajs/babel-root-slash-import) to modify the import path before we load it.
+
 ### v2.0.2
 
 Improve error for not found files.
