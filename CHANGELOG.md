@@ -1,5 +1,9 @@
 # ChangeLog
 
+### v2.0.2
+
+Improve error for not found files.
+
 ### v2.0.1
 
 Add forgotten `build` files to npm package.

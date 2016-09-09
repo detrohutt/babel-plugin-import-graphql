@@ -29,6 +29,11 @@ export default class BabelInlineImportHelper {
     }
 
     const mod = requireResolve(givenPath, path.resolve(reference));
+
+    if (!mod || !mod.src) {
+      throw new Error(`Path '${givenPath}' could not be found for '${reference}'`);
+    }
+
     return fs.readFileSync(mod.src).toString();
   }
 }

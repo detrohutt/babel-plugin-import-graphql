@@ -47,6 +47,12 @@ describe('Babel Inline Import - Helper', () => {
       }).to.throw(Error);
     });
 
+    it('throws error if file does not exist', () => {
+      expect(() => {
+        BabelInlineImportHelper.getContents('non_existent.raw', __filename);
+      }).to.throw(Error);
+    });
+
     it('returns file content', () => {
       expect(BabelInlineImportHelper.getContents('./fixtures/example.raw', __filename)).to.equal('a raw content\n');
     });
