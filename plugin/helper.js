@@ -9,6 +9,8 @@ export default class BabelInlineImportHelper {
     '.graphql',
   ];
 
+  static root = global.rootPath || process.cwd();
+
   static shouldBeInlined(givenPath, extensions) {
     const accept = (typeof extensions === 'string')
       ? [extensions]
@@ -35,5 +37,24 @@ export default class BabelInlineImportHelper {
     }
 
     return fs.readFileSync(mod.src).toString();
+  }
+
+  static transformRelativeToRootPath(path, rootPathSuffix) {
+    if (this.hasRoot(path)) {
+      const withoutRoot = path.substring(1, path.length);
+      return `${BabelInlineImportHelper.root}${rootPathSuffix || ''}/${withoutRoot}`;
+    }
+    if (typeof path === 'string') {
+      return path;
+    }
+    throw new Error('ERROR: No path passed');
+  }
+
+  static hasRoot(string) {
+    if (typeof string !== 'string') {
+      return false;
+    }
+
+    return string.substring(0, 1) === '/';
   }
 }

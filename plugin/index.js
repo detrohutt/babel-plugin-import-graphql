@@ -8,12 +8,18 @@ export default function({ types: t }) {
           ImportDeclaration: {
             exit(path, state) {
               const givenPath = path.node.source.value;
-              const reference = state && state.file && state.file.opts.filename;
+              let reference = state && state.file && state.file.opts.filename;
               const extensions = state && state.opts && state.opts.extensions;
 
               if (BabelInlineImportHelper.shouldBeInlined(givenPath, extensions)) {
                 if (path.node.specifiers.length > 1) {
                   throw new Error(`Destructuring inlined import is not allowed. Check the import statement for '${givenPath}'`);
+                }
+debugger
+
+                // Here we detect the use of Meteor by checking global.meteorBabelHelpers
+                if(global.meteorBabelHelpers && BabelInlineImportHelper.hasRoot(reference)) {
+                  reference = BabelInlineImportHelper.transformRelativeToRootPath(reference);
                 }
 
                 const id = path.node.specifiers[0].local.name;

@@ -10,6 +10,11 @@ describe('Babel Inline Import - Helper', () => {
         '.graphql',
       ]);
     });
+
+    it('returns the root path', () => {
+      const rootByProcess = process.cwd();
+      expect(BabelInlineImportHelper.root).to.equal(rootByProcess);
+    });
   });
 
   describe('shouldBeInlined', () => {
@@ -55,6 +60,47 @@ describe('Babel Inline Import - Helper', () => {
 
     it('returns file content', () => {
       expect(BabelInlineImportHelper.getContents('./fixtures/example.raw', __filename)).to.equal('a raw content\n');
+    });
+  });
+
+  describe('transformRelativeToRootPath', () => {
+    it('returns a string', () => {
+      const func = BabelInlineImportHelper.transformRelativeToRootPath('');
+      expect(func).to.be.a('string');
+    });
+
+    it('transforms given path relative root-path', () => {
+      const rootPath = `${process.cwd()}/some/path`;
+      const result = BabelInlineImportHelper.transformRelativeToRootPath('/some/path');
+      expect(result).to.equal(rootPath);
+    });
+
+    it('throws error if no string is passed', () => {
+      expect(() => {
+        BabelInlineImportHelper.transformRelativeToRootPath();
+      }).to.throw(Error);
+    });
+  });
+
+
+  describe('hasRoot', () => {
+    it('returns a boolean', () => {
+      const func = BabelInlineImportHelper.hasRoot();
+      expect(func).to.be.a('boolean');
+    });
+
+    it('check if the string has "/" at the beginning', () => {
+      const withRoot = BabelInlineImportHelper.hasRoot('/path');
+      const withoutRoot = BabelInlineImportHelper.hasRoot('./some/path');
+      expect(withoutRoot).to.be.false;
+      expect(withRoot).to.be.true;
+    });
+
+    it('returns false if no string passed', () => {
+      const nothingPassed = BabelInlineImportHelper.hasRoot();
+      const wrongTypePassed = BabelInlineImportHelper.hasRoot([]);
+      expect(nothingPassed).to.be.false;
+      expect(wrongTypePassed).to.be.false;
     });
   });
 });
