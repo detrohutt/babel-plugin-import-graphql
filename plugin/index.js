@@ -15,7 +15,6 @@ export default function({ types: t }) {
                 if (path.node.specifiers.length > 1) {
                   throw new Error(`Destructuring inlined import is not allowed. Check the import statement for '${givenPath}'`);
                 }
-debugger
 
                 // Here we detect the use of Meteor by checking global.meteorBabelHelpers
                 if(global.meteorBabelHelpers && BabelInlineImportHelper.hasRoot(reference)) {
