@@ -92,6 +92,14 @@ If you want to enable different file extensions, you can define them in your `.b
 
 It inserts the __content__ of the _imported file_ directly into the _importing file_, assigning it to a variable with the same identifier of the _import statement_, thus replacing the _import statement_ and the _file path_ by its resulting raw content (no parsing occurs).
 
+## Caveats
+
+Babel does not track dependency between _imported_ and _importing_ files after the transformation is made. Therefore, you need to change the _importing file_ in order to see your changes in the _imported file_ spread. To overcome this, you can:
+
+* Disable babel cache (`BABEL_DISABLE_CACHE=1`)
+
+Also make sure that your task runner is watching for changes in the _imported file_ as well. You can see it working [here](https://github.com/Quadric/perfect-graphql-starter/blob/master/nodemon.json).
+
 
 ## Motivate
 If you like this project just give it a star :) I like stars.
