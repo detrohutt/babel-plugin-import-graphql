@@ -2,7 +2,7 @@
   "name": "babel-plugin-inline-import-graphql-ast",
   "version": "1.0.0",
   "description": "Babel plugin to make raw files importable",
-  "author": "Victor Duarte (Quadric ApS) <contact@quadric.net>",
+  "author": "Alexander Roberts <detrohutt@gmail.com>",
   "license": "MIT",
   "main": "build/index.js",
   "files": [
@@ -17,7 +17,7 @@
     "import",
     "inline"
   ],
-  "repository": "Quadric/babel-plugin-inline-import",
+  "repository": "detrohutt/babel-plugin-inline-import",
   "scripts": {
     "test": "mocha test/*.spec.js --require config/mocha.js --compilers js:babel-core/register",
     "test-watch": "mocha test/*.spec.js --require config/mocha.js --compilers js:babel-core/register --watch",
