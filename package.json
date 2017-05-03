@@ -25,6 +25,8 @@
     "prepublish": "babel -d build/ plugin/"
   },
   "dependencies": {
+    "babylon": "^6.17.0",
+    "graphql-tag": "^2.0.0",
     "require-resolve": "0.0.2"
   },
   "devDependencies": {
