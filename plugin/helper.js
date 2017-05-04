@@ -6,6 +6,7 @@ export default class BabelInlineImportHelper {
   static extensions = [
     '.raw',
     '.text',
+    '.gql',
     '.graphql',
   ];
 
