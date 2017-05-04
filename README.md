@@ -1,69 +1,87 @@
-# Babel Inline Import [![Build Status](https://travis-ci.org/Quadric/babel-plugin-inline-import.svg?branch=master)](https://travis-ci.org/Quadric/babel-plugin-inline-import)
-Babel plugin to add the opportunity to use `import` with raw/literal content<br>
-It is good e.g. for importing `*.graphql` files into your code.
+# Babel Inline Import GraphQL AST
+Babel plugin allowing you to `import` `.graphql` and `.gql` files. The code is pre-parsed by `gql` from `graphql-tag` and the GraphQL AST object is inserted into your code at transpile time.
+
+## Important note
+
+While this package is intended as an alternative to [graphql-tag/loader](http://dev.apollodata.com/react/webpack.html), it does NOT currently support importing [fragments](http://dev.apollodata.com/react/webpack.html#Fragments) with `#import`. Work on this is underway.
+
+## Known use cases
+
+Somewhat replaces `graphql-tag/loader` in projects where Webpack is unavailable(i.e. [NextJS](https://github.com/zeit/next.js/))
 
 ## Examples
 
-Before (without Babel-Inline-Import):
+Before (without babel-plugin-inline-import-graphql-ast):
 ```javascript
-// server.js
+// ProductsPage.js
 
-// bad syntax highlighting, no syntax checking
-const typeDefinitions = `
-type Query {
-  testString: String
-}
-schema {
-  query: Query
-}
-`;
+...
+import { gql } from 'react-apollo'
 
-graphQLServer({
-  schema: [typeDefinitions],
+class ProductsPage extends React.Component {
   ...
-});
+}
+
+const productsQuery = gql`
+  query products {
+    products {
+      productId
+      name
+      description
+      weight
+    }
+  }
+`
+
+export default graphql(productsQuery)(ProductsPage)
 ```
 
-Now (with Babel-Inline-Import):
+Now (with babel-plugin-inline-import-graphql-ast):
 ```javascript
-// /some/schema.graphql
-type Query {
-  testString: String
-}
-schema {
-  query: Query
-}
-```
+// productsQuery.graphql
 
-```javascript
-// server.js
-import schema from '/some/schema.graphql';
+query products {
+  products {
+    productId
+    name
+    description
+    weight
+  }
+}
 
-graphQLServer({
-  schema: [schema],
+// ProductsPage.js
+
+...
+import myImportedQuery from './productsQuery.graphql'
+
+class ProductsPage extends React.Component {
   ...
-});
+}
+
+export default graphql(myImportedQuery)(ProductsPage)
 ```
 
-**Note:** both cases are equivalent and will result in similar code after Babel transpile them. Check [How it works](#how-it-works) section for details.
+**Note:** both cases are equivalent and will result in similar code after Babel transpiles them. Check [How it works](#how-it-works) section for details.
 
 ## Install
+
 ```
-npm install babel-plugin-inline-import --save-dev
+yarn add -D babel-plugin-inline-import-graphql-ast
 ```
 
 ## Use
+
 Add a `.babelrc` file and write:
 ```javascript
 {
   "plugins": [
-    "babel-plugin-inline-import"
+    "babel-plugin-inline-import-graphql-ast"
   ]
 }
 ```
 or pass the plugin with the plugins-flag on CLI
 ```
-babel-node myfile.js --plugins babel-plugin-inline-import
+babel-node myfile.js --plugins babel-plugin-inline-import-graphql-ast
 ```
 
 By default, Babel-Inline-Import is compatible with the following file extensions:
@@ -71,9 +89,11 @@ By default, Babel-Inline-Import is compatible with the following file extensions
 * .raw
 * .text
 * .graphql
+* .gql
 
 
 ## Customize
+
 If you want to enable different file extensions, you can define them in your `.babelrc` file
 ```javascript
 {
@@ -90,7 +110,7 @@ If you want to enable different file extensions, you can define them in your `.b
 
 ## How it works
 
-It inserts the __content__ of the _imported file_ directly into the _importing file_, assigning it to a variable with the same identifier of the _import statement_, thus replacing the _import statement_ and the _file path_ by its resulting raw content (no parsing occurs).
+When you `import` a `.graphql` or `.gql` file, it is parsed into a GraphQL AST object by the `gql` function from `graphql-tag`. This AST object is inserted directly into the _importing file_, in a variable with the name defined in the _import statement_. The import should be treated as a default import(name whatever you want; no braces necessary)
 
 ## Caveats
 
@@ -100,6 +120,5 @@ Babel does not track dependency between _imported_ and _importing_ files after t
 
 Also make sure that your task runner is watching for changes in the _imported file_ as well. You can see it working [here](https://github.com/Quadric/perfect-graphql-starter/blob/master/nodemon.json).
 
-
-## Motivate
-If you like this project just give it a star :) I like stars.
+## Credits
+This package is a modified version of [babel-plugin-inline-import](https://www.npmjs.com/package/babel-plugin-inline-import)
