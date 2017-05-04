@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-inline-import-graphql-ast",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Babel plugin to make raw files importable",
   "author": "Alexander Roberts <detrohutt@gmail.com>",
   "license": "MIT",
