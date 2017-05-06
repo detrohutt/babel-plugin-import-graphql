@@ -3,11 +3,11 @@ Babel plugin allowing you to `import` `.graphql` and `.gql` files. The code is p
 
 ## Important note
 
-While this package is intended as an alternative to [graphql-tag/loader](http://dev.apollodata.com/react/webpack.html), it does NOT currently support importing [fragments](http://dev.apollodata.com/react/webpack.html#Fragments) with `#import`. Work on this is underway.
+Prior to v1.2.0, [fragments](http://dev.apollodata.com/react/webpack.html#Fragments) (#import statements) are not supported
 
 ## Known use cases
 
-Somewhat replaces `graphql-tag/loader` in projects where Webpack is unavailable(i.e. [NextJS](https://github.com/zeit/next.js/))
+Replaces `graphql-tag/loader` in projects where Webpack is unavailable(i.e. [NextJS](https://github.com/zeit/next.js/))
 
 ## Examples
 
@@ -38,14 +38,19 @@ export default graphql(productsQuery)(ProductsPage)
 
 Now (with babel-plugin-inline-import-graphql-ast):
 ```javascript
-// productsQuery.graphql
+// productFragment.graphql
+fragment productFragment on Product {
+  name
+  description
+  weight
+}
 
+// productsQuery.graphql
+#import "./productFragment.graphql"
 query products {
   products {
     productId
-    name
-    description
-    weight
+    ...productFragment
   }
 }
 
@@ -84,29 +89,10 @@ or pass the plugin with the plugins-flag on CLI
 babel-node myfile.js --plugins babel-plugin-inline-import-graphql-ast
 ```
 
-By default, Babel-Inline-Import is compatible with the following file extensions:
+Babel-Inline-Import is compatible with the following file extensions:
 
-* .raw
-* .text
 * .graphql
 * .gql
-
-
-## Customize
-
-If you want to enable different file extensions, you can define them in your `.babelrc` file
-```javascript
-{
-  "plugins": [
-    ["babel-plugin-inline-import", {
-      "extensions": [
-        ".json",
-        ".sql"
-      ]
-    }]
-  ]
-}
-```
 
 ## How it works
 
@@ -119,6 +105,8 @@ Babel does not track dependency between _imported_ and _importing_ files after t
 * Disable babel cache (`BABEL_DISABLE_CACHE=1`)
 
 Also make sure that your task runner is watching for changes in the _imported file_ as well. You can see it working [here](https://github.com/Quadric/perfect-graphql-starter/blob/master/nodemon.json).
+
+**Note for NextJS users** - instead of BABEL_DISABLE_CACHE, you'll need to manually clear the node_modules/.cache folder to re-transpile your .gql/.graphql files. The easiest way to do this is using node scripts. You can either prepend your normal `start` script command with `rimraf ./node_modules/.cache` or create a separate script i.e. `clean`. Note you'd need the rimraf dependency installed in this example
 
 ## Credits
 This package is a modified version of [babel-plugin-inline-import](https://www.npmjs.com/package/babel-plugin-inline-import)
