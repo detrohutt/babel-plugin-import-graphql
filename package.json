@@ -10,10 +10,10 @@
   ],
   "keywords": [
     "babel-plugin",
+    "apollo",
     "graphql",
-    "raw",
+    "gql",
     "extension",
-    "wrap",
     "import",
     "inline"
   ],
