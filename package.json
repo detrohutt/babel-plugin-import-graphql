@@ -17,7 +17,7 @@
     "import",
     "inline"
   ],
-  "repository": "detrohutt/babel-plugin-inline-import",
+  "repository": "detrohutt/babel-plugin-inline-import-graphql-ast",
   "scripts": {
     "test": "mocha test/*.spec.js --require config/mocha.js --compilers js:babel-core/register",
     "test-watch": "mocha test/*.spec.js --require config/mocha.js --compilers js:babel-core/register --watch",
