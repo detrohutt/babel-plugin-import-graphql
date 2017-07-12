@@ -41,15 +41,8 @@ export default class BabelInlineImportHelper {
 		return fs.readFileSync(filepath).toString()
 	}
 
-	static transformRelativeToRootPath(path, rootPathSuffix) {
-		if (this.hasRoot(path)) {
-			const withoutRoot = path.substring(1, path.length)
-			return `${BabelInlineImportHelper.root}${rootPathSuffix || ''}/${withoutRoot}`
-		}
-		if (typeof path === 'string') {
-			return path
-		}
-		throw new Error('ERROR: No path passed')
+	static transformRelativeToRootPath(pathArg, rootPathSuffix = '') {
+		return path.resolve(BabelInlineImportHelper.root, rootPathSuffix, pathArg)
 	}
 
 	static hasRoot(string) {
@@ -57,6 +50,6 @@ export default class BabelInlineImportHelper {
 			return false
 		}
 
-		return string.substring(0, 1) === '/'
+		return path.isAbsolute(string)
 	}
 }
