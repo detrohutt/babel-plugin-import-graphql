@@ -16,7 +16,7 @@ const expandImports = (source, resolvePath, reference) => {
 	let defs = queryAST.definitions
 	lines.some(line => {
 		if (line[0] === '#' && line.slice(1).split(' ')[0] === 'import') {
-			const importFile = line.slice(1).split(' ')[1].slice(1, -1)
+			const importFile = line.slice(1).split(' ')[1].slice(1, -2)
 			const fragmentAST = gql`${BabelInlineImportHelper.getContents(importFile, path.resolve(reference, resolvePath))}`
 			defs = [...defs, ...fragmentAST.definitions]
 		}
