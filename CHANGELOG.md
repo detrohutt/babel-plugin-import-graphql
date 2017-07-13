@@ -1,31 +1,56 @@
 # ChangeLog
 
-### v2.0.4
+### v1.3.3
 
-Add support for Meteor projects.
+First official release with Windows support
+Updated README and CHANGELOG
 
-### v2.0.3
+### v1.3.2
 
-Visit node on `exit` instead of `enter`. It allows other plugins like [babel-root-slash-import](https://github.com/mantrajs/babel-root-slash-import) to modify the import path before we load it.
+Test version(debugging Windows problems), published as @winfix tag
+First version that works on Windows/Mac/Linux
 
-### v2.0.2
+### v1.3.1
 
-Improve error for not found files.
+Test version(debugging Windows problems), published as @winfix tag
+First working version on Windows, non-functional on Mac/Linux
 
-### v2.0.1
+### v1.3.0
 
-Add forgotten `build` files to npm package.
+Test version(debugging Windows problems), published as @winfix tag
+Initial attempt, non-functional
 
-### v2.0.0
+### v1.2.3
 
-Change approach. Replace `import` statements by inline content, instead of trying to export raw content according to JS standards.
+Update name of Github repo
 
-Forks [babel-root-slash-import](https://github.com/mantrajs/babel-root-slash-import).
+### v1.2.2
+
+Add required graphql dependency
+
+### v1.2.1
+
+Update npm keywords
+
+### v1.2.0
+
+Add support for GraphQL Fragments
+Remove support for .raw and .text extensions(left over from forked project)
+
+### v1.1.1
+
+Update forked README to reflect the new package
+
+### v1.1.0
+
+Add support for .gql file extension
+
+### v1.0.1
+
+First functional version
+Add ability to import .graphql files as AST(only on Mac/Linux)
+Fix package.json info
 
 ### v1.0.0
 
-Try to wrap raw content and export it according to JS standards.
-Didn't work well. Couldn't manage to stop Babel parsing raw content.
-
-It can be accessed at [v1 branch](https://github.com/Quadric/babel-plugin-graphql-raw/tree/v1).
-Forks [babel-plugin-iife-wrap](https://github.com/TrySound/babel-plugin-iife-wrap).
+Initial version. Bad publish, non-functional

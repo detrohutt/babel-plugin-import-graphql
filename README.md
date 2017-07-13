@@ -3,6 +3,7 @@ Babel plugin allowing you to `import` `.graphql` and `.gql` files. The code is p
 
 ## Important note
 
+Prior to v1.3.2, the plugin cannot be run in Windows
 Prior to v1.2.0, [fragments](http://dev.apollodata.com/react/webpack.html#Fragments) (#import statements) are not supported
 
 ## Known use cases
