@@ -1,4 +1,5 @@
 import path from 'path'
+import os from 'os'
 import gql from 'graphql-tag'
 import { parse } from 'babylon'
 import BabelInlineImportHelper from './helper'
@@ -7,16 +8,16 @@ const filterFn = line =>
 	!(line[0] === '#' && line.slice(1).split(' ')[0] === 'import') &&
 	!(line === '')
 
-const stripImports = source => source.split('\n').filter(filterFn).join('\n')
+const stripImports = source => source.split(os.EOL).filter(filterFn).join(os.EOL)
 
 const expandImports = (source, resolvePath, reference) => {
 	reference = path.dirname(reference)
 	const queryAST = gql`${stripImports(source)}`
-	const lines = source.split('\n')
+	const lines = source.split(os.EOL)
 	let defs = queryAST.definitions
 	lines.some(line => {
 		if (line[0] === '#' && line.slice(1).split(' ')[0] === 'import') {
-			const importFile = line.slice(1).split(' ')[1].slice(1, -2)
+			const importFile = line.slice(1).split(' ')[1].slice(1, -1)
 			const fragmentAST = gql`${BabelInlineImportHelper.getContents(importFile, path.resolve(reference, resolvePath))}`
 			defs = [...defs, ...fragmentAST.definitions]
 		}
