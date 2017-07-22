@@ -13,6 +13,7 @@ export default ({ types: t }) => ({
 					const query = createQuery(importPath, state.file.opts.filename)
 					query.processFragments()
 					query.parse()
+					query.makeSourceEnumerable()
 					curPath.replaceWith(t.variableDeclaration('const', [buildInlineVariable(query.ast)]))
 
 					function buildInlineVariable (graphqlAST) {
@@ -49,6 +50,11 @@ function createQuery (queryPath, babelPath) {
 			const parsedAST = gql`${source}`
 			parsedAST.definitions = [...parsedAST.definitions, ...fragmentDefs]
 			ast = parsedAST
+		},
+		makeSourceEnumerable() {
+			const newAST = JSON.parse(JSON.stringify(ast))
+			newAST.loc.source = ast.loc.source
+			ast = newAST
 		},
 		get ast () { return ast }
 	}
