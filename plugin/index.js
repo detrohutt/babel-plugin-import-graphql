@@ -12,6 +12,7 @@ export default ({ types: t }) => ({
         if (importPath.endsWith('.graphql') || importPath.endsWith('.gql')) {
           const query = createQuery(importPath, state.file.opts.filename)
           query.processFragments()
+          query.dedupeFragments()
           query.parse()
           query.makeSourceEnumerable()
           curPath.replaceWith(t.variableDeclaration('const', [buildInlineVariable(query.ast)]))
@@ -44,6 +45,13 @@ function createQuery (queryPath, babelPath) {
         const absFragmentPath = path.resolve(path.dirname(absPath), fragmentPath)
         const fragmentSource = fs.readFileSync(absFragmentPath).toString()
         fragmentDefs = [...fragmentDefs, ...gql`${fragmentSource}`.definitions]
+      })
+    },
+    dedupeFragments () {
+      let seenNames = {}
+      fragmentDefs = fragmentDefs.filter(def => {
+        if (def.kind !== 'FragmentDefinition') return true;
+        return seenNames[def.name.value] ? false : seenNames[def.name.value] = true
       })
     },
     parse () {
