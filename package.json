@@ -5,18 +5,8 @@
   "author": "Alexander Roberts <detrohutt@gmail.com>",
   "license": "MIT",
   "main": "build/index.js",
-  "files": [
-    "build"
-  ],
-  "keywords": [
-    "babel-plugin",
-    "apollo",
-    "graphql",
-    "gql",
-    "extension",
-    "import",
-    "inline"
-  ],
+  "files": ["build"],
+  "keywords": ["babel-plugin", "apollo", "graphql", "gql", "extension", "import", "inline"],
   "repository": "detrohutt/babel-plugin-inline-import-graphql-ast",
   "scripts": {
     "lint-js": "eslint plugin",
@@ -30,11 +20,16 @@
   "devDependencies": {
     "babel-cli": "6.x.x",
     "babel-core": "^6.14.0",
-    "babel-eslint": "^6.1.2",
+    "babel-eslint": "^7.2.3",
     "babel-preset-es2015-without-strict": "0.0.4",
     "babel-preset-stage-1": "^6.13.0",
     "chai": "^3.5.0",
-    "eslint": "^3.4.0",
+    "eslint": "^4.3.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
     "mocha": "^3.0.2",
     "sinon": "^1.17.5"
   }
