@@ -4,8 +4,6 @@ import { readFileSync } from 'fs'
 import { parse } from 'babylon'
 import gql from 'graphql-tag'
 
-const seenNames = {}
-
 export default ({ types: t }) => ({
   visitor: {
     ImportDeclaration: {
@@ -61,6 +59,7 @@ function createQuery (queryPath, babelPath) {
       }
     },
     dedupeFragments () {
+      let seenNames = {}
       fragmentDefs = fragmentDefs.filter(def => {
         if (def.kind !== 'FragmentDefinition') return true
         return seenNames[def.name.value] ? false : (seenNames[def.name.value] = true)
