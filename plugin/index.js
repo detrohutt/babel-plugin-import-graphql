@@ -7,7 +7,7 @@ import gql from 'graphql-tag'
 export default ({ types: t }) => ({
   visitor: {
     ImportDeclaration: {
-      exit (curPath, state) {
+      enter (curPath, state) {
         const importPath = curPath.node.source.value
         if (importPath.endsWith('.graphql') || importPath.endsWith('.gql')) {
           const query = createQuery(importPath, state.file.opts.filename)
@@ -19,8 +19,8 @@ export default ({ types: t }) => ({
         }
 
         function buildInlineVariable (graphqlAST) {
-          const babelAST = parse('const obj = ' + JSON.stringify(graphqlAST))
-          const objExp = babelAST.program.body[0].declarations[0].init
+          const babelAST = parse(`(${JSON.stringify(graphqlAST)})`)
+          const objExp = babelAST.program.body[0].expression
           return t.variableDeclarator(
             t.identifier(curPath.node.specifiers[0].local.name),
             t.objectExpression(objExp.properties)
