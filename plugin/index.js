@@ -22,16 +22,12 @@ export default ({ types: t }) => ({
           query.parse()
           query.dedupeFragments()
           query.makeSourceEnumerable()
-          curPath.replaceWith(t.variableDeclaration('const', [buildInlineVariable(query.ast)]))
+          curPath.replaceWith(buildInlineVariableAST(query.ast))
         }
 
-        function buildInlineVariable (graphqlAST) {
-          const babelAST = parse(`(${JSON.stringify(graphqlAST)})`)
-          const objExp = babelAST.program.body[0].expression
-          return t.variableDeclarator(
-            t.identifier(curPath.node.specifiers[0].local.name),
-            t.objectExpression(objExp.properties)
-          )
+        function buildInlineVariableAST (graphqlAST) {
+          const inlineVarName = curPath.node.specifiers[0].local.name
+          return parse(`const ${inlineVarName} = ${JSON.stringify(graphqlAST)}`).program.body[0]
         }
       }
     }
