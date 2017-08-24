@@ -14,7 +14,7 @@ export default ({ types: t }) => ({
   },
   visitor: {
     ImportDeclaration: {
-      enter (curPath, state) {
+      exit (curPath, state) {
         const importPath = curPath.node.source.value
         if (importPath.endsWith('.graphql') || importPath.endsWith('.gql')) {
           const query = createQuery(importPath, state.file.opts.filename)
