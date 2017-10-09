@@ -22,12 +22,12 @@ export default ({ types: t }) => ({
           query.parse()
           query.dedupeFragments()
           query.makeSourceEnumerable()
-          curPath.replaceWith(buildInlineVariableAST(query.ast))
+          curPath.replaceWithMultiple(buildInlineVariableAST(query.ast))
         }
 
         function buildInlineVariableAST (graphqlAST) {
           const inlineVarName = curPath.node.specifiers[0].local.name
-          return parse(`const ${inlineVarName} = ${JSON.stringify(graphqlAST)}`).program.body[0]
+          return parse(`const ${inlineVarName} = ${JSON.stringify(graphqlAST)}`).program.body
         }
       }
     }
