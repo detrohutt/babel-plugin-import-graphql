@@ -14,8 +14,10 @@
   },
   "dependencies": {
     "babylon": "^6.17.0",
-    "graphql": "^0.9.6",
     "graphql-tag": "^2.0.0"
+  },
+  "peerDependencies": {
+    "graphql": ">=0.9.6"
   },
   "devDependencies": {
     "babel-cli": "6.x.x",
