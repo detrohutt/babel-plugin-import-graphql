@@ -1,14 +1,38 @@
 # ChangeLog
 
+## v2.0.3 (December 1, 2017)
+
+### Fixes
+
+* Utilize regex for more robust statement splitting (@Tzelon)
+
+## v2.0.2 (October 9, 2017)
+
+* Change graphql to a peer dependency and allow newer versions
+
+## v2.0.1 (September 23, 2017)
+
+#### Note: this should have been a minor release rather than a patch release. Oops!
+
+### Features
+
+* Added support for nested fragments
+
+* Added support for Babel's resolveModuleSource option (@real34)
+
+### Fixes
+
+* Deduplicate fragments
+
 ## v2.0.0 (July 22, 2017)
 
 ### Breaking
 
-* Potentially removed Meteor support. Not sure it worked anyway and there's
-an alternative solution for .graphql files in Meteor.
+* Potentially removed Meteor support. Not sure it worked anyway and there's an alternative solution
+  for .graphql files in Meteor.
 
-* Removed support for customizable extensions. This was undocumented and left
-over from the project I forked.
+* Removed support for customizable extensions. This was undocumented and left over from the project
+  I forked.
 
 ### Features
 
