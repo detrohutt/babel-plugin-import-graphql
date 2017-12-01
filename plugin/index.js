@@ -50,7 +50,7 @@ function createQuery (queryPath, babelPath) {
 
       function processImports (imports, relFile) {
         imports.forEach(statement => {
-          const fragmentPath = statement.split(' ')[1].slice(1, -1)
+          const fragmentPath = statement.split(/\s+/g)[1].slice(1, -1)
           const absFragmentPath = resolve(fragmentPath, relFile)
           const fragmentSource = readFileSync(absFragmentPath).toString()
           const subFragments = getImportStatements(fragmentSource)
