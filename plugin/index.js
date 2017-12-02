@@ -1,5 +1,4 @@
 import path, { dirname } from 'path'
-import { EOL } from 'os'
 import { readFileSync } from 'fs'
 import { parse } from 'babylon'
 import gql from 'graphql-tag'
@@ -45,7 +44,7 @@ function createQuery (queryPath, babelPath) {
       processImports(getImportStatements(source), absPath)
 
       function getImportStatements (src) {
-        return src.split(EOL).filter(line => line.startsWith('#import'))
+        return src.split(/\r?\n/).filter(line => line.startsWith('#import'))
       }
 
       function processImports (imports, relFile) {
