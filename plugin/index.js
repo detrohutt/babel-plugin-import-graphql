@@ -62,13 +62,13 @@ function createQuery (queryPath, babelPath) {
           if (subFragments.length > 0) {
             processImports(subFragments, absFragmentPath)
           }
-          fragmentDefs = [...gql`${fragmentSource}`.definitions,...fragmentDefs]
+          fragmentDefs = [...gql`${fragmentSource}`.definitions, ...fragmentDefs]
         })
       }
     },
-    parse() {
+    parse () {
       const parsedAST = gql`${source}`
-      parsedAST.definitions = [...parsedAST.definitions,...fragmentDefs]
+      parsedAST.definitions = [...parsedAST.definitions, ...fragmentDefs]
       ast = parsedAST
     },
     dedupeFragments () {
