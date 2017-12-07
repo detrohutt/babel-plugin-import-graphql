@@ -45,14 +45,19 @@ function createQuery (queryPath, babelPath) {
       processImports(getImportStatements(source), absPath)
 
       function getImportStatements (src) {
-        return src.split(EOL).filter(line => line.startsWith('#import'))
+        return src
+          .replace(/\r/g, '')
+          .split(/\n+/g)
+          .filter(line => line.startsWith('#import'))
       }
 
       function processImports (imports, relFile) {
         imports.forEach(statement => {
-          const fragmentPath = statement.split(/\s+/g)[1].slice(1, -1)
+          const fragmentPath = statement.split(/[\s\n]+/g)[1].slice(1, -1)
           const absFragmentPath = resolve(fragmentPath, relFile)
-          const fragmentSource = readFileSync(absFragmentPath).toString()
+          const fragmentSource = readFileSync(
+            absFragmentPath.replace(/'/g, '')
+          ).toString()
           const subFragments = getImportStatements(fragmentSource)
           if (subFragments.length > 0) {
             processImports(subFragments, absFragmentPath)
