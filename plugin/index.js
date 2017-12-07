@@ -67,10 +67,8 @@ function createQuery (queryPath, babelPath) {
       }
     },
     parse() {
-      const parsedAST = gql`
-        ${source}
-      `
-      parsedAST.definitions = [...parsedAST.definitions, ...fragmentDefs]
+      const parsedAST = gql`${source}`
+      parsedAST.definitions = [...parsedAST.definitions,...fragmentDefs]
       ast = parsedAST
     },
     dedupeFragments () {
