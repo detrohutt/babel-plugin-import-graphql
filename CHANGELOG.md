@@ -1,5 +1,12 @@
 # ChangeLog
 
+## v2.0.4 (December 7, 2017)
+
+### Fixes
+
+* Improve .gql file parsing to address issues with Windows and/or IDE settings (@OisinOKeeffe
+  @Tzelon)
+
 ## v2.0.3 (December 1, 2017)
 
 ### Fixes
@@ -7,6 +14,8 @@
 * Utilize regex for more robust statement splitting (@Tzelon)
 
 ## v2.0.2 (October 9, 2017)
+
+### Maintenance
 
 * Change graphql to a peer dependency and allow newer versions
 
