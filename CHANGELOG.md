@@ -1,5 +1,19 @@
 # ChangeLog
 
+## v2.1.0 (January 25, 2018)
+
+### Features
+
+* Add `nodePath` option
+
+### Fixes
+
+* Respect `NODE_PATH` environment variable
+
+### Maintenance
+
+* Remove leftover files and dependencies from `babel-plugin-inline-import`
+
 ## v2.0.4 (December 7, 2017)
 
 ### Fixes

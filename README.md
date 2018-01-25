@@ -1,18 +1,17 @@
 # Babel Inline Import GraphQL AST
+
 Babel plugin allowing you to `import` `.graphql` and `.gql` files. The code is pre-parsed by `gql` from `graphql-tag` and the GraphQL AST object is inserted into your code at transpile time.
-
-## Important note
-
-Prior to v1.3.2, the plugin cannot be run in Windows
-Prior to v1.2.0, [fragments](http://dev.apollodata.com/react/webpack.html#Fragments) (#import statements) are not supported
 
 ## Known use cases
 
-Replaces `graphql-tag/loader` in projects where Webpack is unavailable(i.e. [NextJS](https://github.com/zeit/next.js/))
+* Replaces `graphql-tag/loader` in projects where Webpack is unavailable(i.e. [NextJS](https://github.com/zeit/next.js/))
+
+* Users of [create-react-app](https://github.com/facebook/create-react-app/) that want to avoid ejecting their app can use this package indirectly by using [react-app-rewire-inline-import-graphql-ast](https://github.com/detrohutt/react-app-rewire-inline-import-graphql-ast)
 
 ## Examples
 
 Before (without babel-plugin-inline-import-graphql-ast):
+
 ```javascript
 // ProductsPage.js
 
@@ -38,6 +37,7 @@ export default graphql(productsQuery)(ProductsPage)
 ```
 
 Now (with babel-plugin-inline-import-graphql-ast):
+
 ```javascript
 // productFragment.graphql
 fragment productFragment on Product {
@@ -78,6 +78,7 @@ yarn add -D babel-plugin-inline-import-graphql-ast
 ## Use
 
 Add a `.babelrc` file and write:
+
 ```javascript
 {
   "plugins": [
@@ -85,15 +86,21 @@ Add a `.babelrc` file and write:
   ]
 }
 ```
+
 or pass the plugin with the plugins-flag on CLI
+
 ```
 babel-node myfile.js --plugins babel-plugin-inline-import-graphql-ast
 ```
 
-Babel-Inline-Import is compatible with the following file extensions:
+Babel-Inline-Import supports the following file extensions:
 
 * .graphql
 * .gql
+
+## options
+
+* `nodePath` -- Takes a string just like the [`NODE_PATH`](https://nodejs.org/api/modules.html#modules_loading_from_the_global_folders) environment variable and is used to allow resolution of absolute paths to your `.gql`/`.graphql` files. Note this currently only works in javascript files. If you already have your `NODE_PATH` variable set in your environment, you don't need to set this option. It is intended primarily for use with [react-app-rewire-inline-import-graphql-ast](https://github.com/detrohutt/react-app-rewire-inline-import-graphql-ast).
 
 ## How it works
 
@@ -101,13 +108,14 @@ When you `import` a `.graphql` or `.gql` file, it is parsed into a GraphQL AST o
 
 ## Caveats
 
-Babel does not track dependency between _imported_ and _importing_ files after the transformation is made. Therefore, you need to change the _importing file_ in order to see your changes in the _imported file_ spread. To overcome this, you can:
+Babel does not track dependency between _imported_ and _importing_ files after the transformation is made. Therefore, you need to change the _importing file_ in order to see your changes in the _imported file_ take effect. To overcome this, you can:
 
 * Disable babel cache (`BABEL_DISABLE_CACHE=1`)
 
 Also make sure that your task runner is watching for changes in the _imported file_ as well. You can see it working [here](https://github.com/Quadric/perfect-graphql-starter/blob/master/nodemon.json).
 
-**Note for NextJS users** - instead of BABEL_DISABLE_CACHE, you'll need to manually clear the node_modules/.cache folder to re-transpile your .gql/.graphql files. The easiest way to do this is using node scripts. You can either prepend your normal `start` script command with `rimraf ./node_modules/.cache` or create a separate script i.e. `clean`. Note you'd need the rimraf dependency installed in this example
+**Note** - If `BABEL_DISABLE_CACHE` doesn't work, you'll need to manually clear the `node_modules/.cache` folder to re-transpile your `.gql`/`.graphql` files. You can either prepend your normal `start` script command with `rimraf ./node_modules/.cache &&` or create a separate script i.e. `clean`. Note you'd need the rimraf dependency installed in this example
 
 ## Credits
-This package is a modified version of [babel-plugin-inline-import](https://www.npmjs.com/package/babel-plugin-inline-import)
+
+This package started out as a modified version of [babel-plugin-inline-import](https://www.npmjs.com/package/babel-plugin-inline-import)
