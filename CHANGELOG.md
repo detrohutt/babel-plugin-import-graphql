@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v2.1.2 (January 26, 2018)
+
+### Maintenance
+
+* Add "Known Issues" section to README.md
+
 ## v2.1.1 (January 25, 2018)
 
 ### Fixes
