@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-inline-import-graphql-ast",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Babel plugin to make .gql/.graphql files importable",
   "author": "Alexander Roberts <detrohutt@gmail.com>",
   "license": "MIT",
