@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v2.1.1 (January 25, 2018)
+
+### Fixes
+
+* Revert changes to babel settings and babel dependencies
+
 ## v2.1.0 (January 25, 2018)
 
 ### Features
