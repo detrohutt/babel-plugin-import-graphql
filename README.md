@@ -1,3 +1,5 @@
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3AYURHRU7PMCL)
+
 # Babel Inline Import GraphQL AST
 
 Babel plugin allowing you to `import` `.graphql` and `.gql` files. The code is pre-parsed by `gql` from `graphql-tag` and the GraphQL AST object is inserted into your code at transpile time.
