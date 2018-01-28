@@ -24,7 +24,9 @@ export default ({ types: t }) => ({
           const operations = doc.definitions.filter(d => d.kind === 'OperationDefinition')
           if (operations.length > 1) {
             const docs = createDocPerOp(doc)
-            curPath.replaceWithMultiple(importNames.map(name => buildVariableAST(docs[name], name)))
+            curPath.node.specifiers[0].type === 'ImportDefaultSpecifier'
+              ? curPath.replaceWith(buildVariableAST(docs.default))
+              : curPath.replaceWithMultiple(importNames.map(n => buildVariableAST(docs[n], n)))
           } else {
             curPath.replaceWith(buildVariableAST(doc))
           }

@@ -11,10 +11,17 @@ export function createDocPerOp (doc) {
   })
 
   let docs = {}
-  doc.definitions.forEach(op => {
+  doc.definitions.forEach((op, i) => {
     if (op.kind === 'OperationDefinition') {
       if (!op.name) throw 'Names are required for a document with multiple Queries/Mutations'
-      docs[op.name.value] = oneQuery(doc, op.name.value)
+
+      const curOpDoc = createSingleOperationDoc(doc, op.name.value)
+      if (i === 0) {
+        docs.default = curOpDoc
+        docs[op.name.value] = curOpDoc
+      } else {
+        docs[op.name.value] = curOpDoc
+      }
     }
   })
 
@@ -39,7 +46,7 @@ function findOperation (doc, name) {
   return doc.definitions.find(op => (op.name ? op.name.value == name : false))
 }
 
-function oneQuery (doc, operationName) {
+function createSingleOperationDoc (doc, operationName) {
   // Copy the DocumentNode, but clear out the definitions
   let newDoc = Object.assign({}, doc)
   newDoc.definitions = [findOperation(doc, operationName)]
