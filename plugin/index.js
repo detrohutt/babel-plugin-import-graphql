@@ -3,8 +3,9 @@ import { existsSync, readFileSync } from 'fs'
 import { parse } from 'babylon'
 import gql from 'graphql-tag'
 
-let resolve
+import { createDocPerOp } from './multi-op'
 
+let resolve
 export default ({ types: t }) => ({
   manipulateOptions ({ resolveModuleSource }) {
     if (!resolve) {
@@ -16,27 +17,30 @@ export default ({ types: t }) => ({
       exit (curPath, { file: { opts: { filename: babelPath } }, opts: { nodePath } }) {
         const importPath = curPath.node.source.value
         if (importPath.endsWith('.graphql') || importPath.endsWith('.gql')) {
+          const importNames = curPath.node.specifiers.map(s => s.local.name)
           const fallbackResolvePaths = nodePath ? nodePath.split(path.delimiter) : undefined
-          const query = createQuery(importPath, babelPath, fallbackResolvePaths)
-          query.processFragments()
-          query.parse()
-          query.dedupeFragments()
-          query.makeSourceEnumerable()
-          curPath.replaceWith(buildInlineVariableAST(query.ast))
-        }
+          const doc = processDoc(createDoc(importPath, babelPath, fallbackResolvePaths))
 
-        function buildInlineVariableAST (graphqlAST) {
-          const inlineVarName = curPath.node.specifiers[0].local.name
-          return parse(`const ${inlineVarName} = ${JSON.stringify(graphqlAST)}`).program.body[0]
+          const operations = doc.definitions.filter(d => d.kind === 'OperationDefinition')
+          if (operations.length > 1) {
+            const docs = createDocPerOp(doc)
+            curPath.replaceWithMultiple(importNames.map(name => buildVariableAST(docs[name], name)))
+          } else {
+            curPath.replaceWith(buildVariableAST(doc))
+          }
+
+          function buildVariableAST (graphqlAST, importName = importNames[0]) {
+            return parse(`const ${importName} = ${JSON.stringify(graphqlAST)}`).program.body[0]
+          }
         }
       }
     }
   }
 })
 
-function createQuery (queryPath, babelPath, paths) {
-  let absPath = resolve(queryPath, babelPath)
-  if (!existsSync(absPath)) absPath = require.resolve(queryPath, { paths })
+function createDoc (importPath, babelPath, paths) {
+  let absPath = resolve(importPath, babelPath)
+  if (!existsSync(absPath)) absPath = require.resolve(importPath, { paths })
   const source = readFileSync(absPath).toString()
   let ast = null
   let fragmentDefs = []
@@ -46,10 +50,7 @@ function createQuery (queryPath, babelPath, paths) {
       processImports(getImportStatements(source), absPath)
 
       function getImportStatements (src) {
-        return src
-          .replace(/\r/g, '')
-          .split(/\n+/g)
-          .filter(line => line.startsWith('#import'))
+        return src.split(/(\r\n|\r|\n)+/).filter(line => line.startsWith('#import'))
       }
 
       function processImports (imports, relFile) {
@@ -58,9 +59,7 @@ function createQuery (queryPath, babelPath, paths) {
           const absFragmentPath = resolve(fragmentPath, relFile)
           const fragmentSource = readFileSync(absFragmentPath.replace(/'/g, '')).toString()
           const subFragments = getImportStatements(fragmentSource)
-          if (subFragments.length > 0) {
-            processImports(subFragments, absFragmentPath)
-          }
+          if (subFragments.length > 0) processImports(subFragments, absFragmentPath)
           // prettier-ignore
           fragmentDefs = [...gql`${fragmentSource}`.definitions, ...fragmentDefs]
         })
@@ -88,4 +87,12 @@ function createQuery (queryPath, babelPath, paths) {
       return ast
     }
   }
+}
+
+function processDoc (doc) {
+  doc.processFragments()
+  doc.parse()
+  doc.dedupeFragments()
+  doc.makeSourceEnumerable()
+  return doc.ast
 }
