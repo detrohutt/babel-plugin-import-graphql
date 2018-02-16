@@ -7,14 +7,14 @@ import { createDocPerOp } from './multi-op'
 
 let resolve
 export default ({ types: t }) => ({
-  manipulateOptions ({ resolveModuleSource }) {
+  manipulateOptions({ resolveModuleSource }) {
     if (!resolve) {
       resolve = resolveModuleSource || ((src, file) => path.resolve(dirname(file), src))
     }
   },
   visitor: {
     ImportDeclaration: {
-      exit (curPath, { file: { opts: { filename: babelPath } }, opts: { nodePath } }) {
+      exit(curPath, { file: { opts: { filename: babelPath } }, opts: { nodePath } }) {
         const importPath = curPath.node.source.value
         if (importPath.endsWith('.graphql') || importPath.endsWith('.gql')) {
           const importNames = curPath.node.specifiers.map(s => s.local.name)
@@ -27,22 +27,22 @@ export default ({ types: t }) => ({
           if (operations.length > 1) {
             const docs = createDocPerOp(doc)
             curPath.node.specifiers[0].type === 'ImportDefaultSpecifier'
-              ? curPath.replaceWith(buildVariableAST(docs.default))
+              ? curPath.replaceWith(buildVariableAST(docs.default, importNames[0]))
               : curPath.replaceWithMultiple(importNames.map(n => buildVariableAST(docs[n], n)))
           } else {
-            curPath.replaceWith(buildVariableAST(doc))
+            curPath.replaceWith(buildVariableAST(doc, importNames[0]))
           }
+        }
 
-          function buildVariableAST (graphqlAST, importName = importNames[0]) {
-            return parse(`const ${importName} = ${JSON.stringify(graphqlAST)}`).program.body[0]
-          }
+        function buildVariableAST(graphqlAST, importName) {
+          return parse(`const ${importName} = ${JSON.stringify(graphqlAST)}`).program.body[0]
         }
       }
     }
   }
 })
 
-function createDoc (importPath, babelPath, paths) {
+function createDoc(importPath, babelPath, paths) {
   let absPath = resolve(importPath, babelPath)
   if (!existsSync(absPath)) absPath = require.resolve(importPath, { paths })
   const source = readFileSync(absPath).toString()
@@ -50,14 +50,14 @@ function createDoc (importPath, babelPath, paths) {
   let fragmentDefs = []
 
   return {
-    processFragments () {
+    processFragments() {
       processImports(getImportStatements(source), absPath)
 
-      function getImportStatements (src) {
+      function getImportStatements(src) {
         return src.split(/(\r\n|\r|\n)+/).filter(line => line.startsWith('#import'))
       }
 
-      function processImports (imports, relFile) {
+      function processImports(imports, relFile) {
         imports.forEach(statement => {
           const fragmentPath = statement.split(/[\s\n]+/g)[1].slice(1, -1)
           const absFragmentPath = resolve(fragmentPath, relFile)
@@ -69,31 +69,31 @@ function createDoc (importPath, babelPath, paths) {
         })
       }
     },
-    parse () {
+    parse() {
       // prettier-ignore
       const parsedAST = gql`${source}`
       parsedAST.definitions = [...parsedAST.definitions, ...fragmentDefs]
       ast = parsedAST
     },
-    dedupeFragments () {
+    dedupeFragments() {
       let seenNames = {}
       ast.definitions = ast.definitions.filter(def => {
         if (def.kind !== 'FragmentDefinition') return true
         return seenNames[def.name.value] ? false : (seenNames[def.name.value] = true)
       })
     },
-    makeSourceEnumerable () {
+    makeSourceEnumerable() {
       const newAST = JSON.parse(JSON.stringify(ast))
       newAST.loc.source = ast.loc.source
       ast = newAST
     },
-    get ast () {
+    get ast() {
       return ast
     }
   }
 }
 
-function processDoc (doc) {
+function processDoc(doc) {
   doc.processFragments()
   doc.parse()
   doc.dedupeFragments()

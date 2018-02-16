@@ -1,5 +1,5 @@
 let definitionRefs
-export function createDocPerOp (doc) {
+export function createDocPerOp(doc) {
   definitionRefs = {}
 
   doc.definitions.forEach(def => {
@@ -13,7 +13,9 @@ export function createDocPerOp (doc) {
   let docs = {}
   doc.definitions.forEach((op, i) => {
     if (op.kind === 'OperationDefinition') {
-      if (!op.name) throw 'Names are required for a document with multiple Queries/Mutations'
+      if (!op.name) {
+        throw new Error('Names are required for a document with multiple Queries/Mutations')
+      }
 
       const curOpDoc = createSingleOperationDoc(doc, op.name.value)
       if (i === 0) {
@@ -28,7 +30,7 @@ export function createDocPerOp (doc) {
   return docs
 }
 
-function collectRefs ({ kind, type, name, selectionSet, variableDefinitions, definitions }, refs) {
+function collectRefs({ kind, type, name, selectionSet, variableDefinitions, definitions }, refs) {
   if (kind === 'FragmentSpread') {
     refs.add(name.value)
   } else if (kind === 'VariableDefinition') {
@@ -42,11 +44,11 @@ function collectRefs ({ kind, type, name, selectionSet, variableDefinitions, def
   variableDefinitions && variableDefinitions.forEach(def => collectRefs(def, refs))
 }
 
-function findOperation (doc, name) {
-  return doc.definitions.find(op => (op.name ? op.name.value == name : false))
+function findOperation(doc, name) {
+  return doc.definitions.find(op => (op.name ? op.name.value === name : false))
 }
 
-function createSingleOperationDoc (doc, operationName) {
+function createSingleOperationDoc(doc, operationName) {
   // Copy the DocumentNode, but clear out the definitions
   let newDoc = Object.assign({}, doc)
   newDoc.definitions = [findOperation(doc, operationName)]
