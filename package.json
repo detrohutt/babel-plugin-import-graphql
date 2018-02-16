@@ -10,6 +10,7 @@
   "repository": "detrohutt/babel-plugin-inline-import-graphql-ast",
   "scripts": {
     "lint": "eslint plugin",
+    "test": "jest",
     "prepublish": "babel plugin --out-dir build"
   },
   "husky": {
@@ -33,9 +34,11 @@
     "eslint": "^4.17.0",
     "eslint-config-standard": "^11.0.0-beta.0",
     "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jest": "^21.12.1",
     "eslint-plugin-node": "^6.0.0",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
+    "graphql": "^0.13.1",
     "husky": "^0.15.0-rc.8",
     "jest": "^22.3.0",
     "lint-staged": "^6.1.0",

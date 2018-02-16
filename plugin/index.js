@@ -17,7 +17,10 @@ export default ({ types: t }) => ({
       exit(curPath, { file: { opts: { filename: babelPath } }, opts: { nodePath } }) {
         const importPath = curPath.node.source.value
         if (importPath.endsWith('.graphql') || importPath.endsWith('.gql')) {
-          const importNames = curPath.node.specifiers.map(s => s.local.name)
+          const importNames = curPath.node.specifiers.map(s => ({
+            imported: s.imported && s.imported.name,
+            local: s.local.name
+          }))
           const fallbackResolvePaths = nodePath
             ? nodePath.split(path.delimiter)
             : process.env.NODE_PATH
@@ -26,16 +29,29 @@ export default ({ types: t }) => ({
           const operations = doc.definitions.filter(d => d.kind === 'OperationDefinition')
           if (operations.length > 1) {
             const docs = createDocPerOp(doc)
-            curPath.node.specifiers[0].type === 'ImportDefaultSpecifier'
-              ? curPath.replaceWith(buildVariableAST(docs.default, importNames[0]))
-              : curPath.replaceWithMultiple(importNames.map(n => buildVariableAST(docs[n], n)))
+            replaceByImportType(curPath, docs, importNames)
           } else {
-            curPath.replaceWith(buildVariableAST(doc, importNames[0]))
+            curPath.replaceWith(buildVariableAST(doc, importNames[0].local))
+          }
+        }
+
+        function replaceByImportType(curPath, docs, importNames) {
+          switch (curPath.node.specifiers[0].type) {
+            case 'ImportDefaultSpecifier':
+              curPath.replaceWith(buildVariableAST(docs.default, importNames[0].local))
+              break
+            case 'ImportNamespaceSpecifier':
+              curPath.replaceWith(buildVariableAST(docs, importNames[0].local))
+              break
+            default:
+              curPath.replaceWithMultiple(
+                importNames.map(n => buildVariableAST(docs[n.imported], n.local))
+              )
           }
         }
 
         function buildVariableAST(graphqlAST, importName) {
-          const { ast } = transformSync(`const ${importName} = ${JSON.stringify(graphqlAST)}`)
+          const { ast } = transformSync(`var ${importName} = ${JSON.stringify(graphqlAST)}`)
           return ast.program.body[0]
         }
       }

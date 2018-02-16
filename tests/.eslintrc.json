@@ -1,0 +1,8 @@
+{
+  "extends": ["plugin:jest/recommended"],
+  "rules": {
+    "no-unused-vars": "off",
+    "no-eval": "off",
+    "no-undef-init": "off"
+  }
+}

@@ -1,0 +1,7 @@
+query first {
+  one
+}
+
+mutation second {
+  two
+}
