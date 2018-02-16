@@ -18,7 +18,9 @@ export default ({ types: t }) => ({
         const importPath = curPath.node.source.value
         if (importPath.endsWith('.graphql') || importPath.endsWith('.gql')) {
           const importNames = curPath.node.specifiers.map(s => s.local.name)
-          const fallbackResolvePaths = nodePath ? nodePath.split(path.delimiter) : undefined
+          const fallbackResolvePaths = nodePath
+            ? nodePath.split(path.delimiter)
+            : process.env.NODE_PATH
           const doc = processDoc(createDoc(importPath, babelPath, fallbackResolvePaths))
 
           const operations = doc.definitions.filter(d => d.kind === 'OperationDefinition')
