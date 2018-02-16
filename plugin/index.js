@@ -1,6 +1,6 @@
 import path, { dirname } from 'path'
 import { existsSync, readFileSync } from 'fs'
-import { parse } from 'babylon'
+import { transformSync } from '@babel/core'
 import gql from 'graphql-tag'
 
 import { createDocPerOp } from './multi-op'
@@ -35,7 +35,8 @@ export default ({ types: t }) => ({
         }
 
         function buildVariableAST(graphqlAST, importName) {
-          return parse(`const ${importName} = ${JSON.stringify(graphqlAST)}`).program.body[0]
+          const { ast } = transformSync(`const ${importName} = ${JSON.stringify(graphqlAST)}`)
+          return ast.program.body[0]
         }
       }
     }
