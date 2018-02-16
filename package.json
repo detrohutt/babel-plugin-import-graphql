@@ -10,7 +10,7 @@
   "repository": "detrohutt/babel-plugin-inline-import-graphql-ast",
   "scripts": {
     "lint": "eslint plugin",
-    "prepublish": "babel -d build/ plugin/"
+    "prepublish": "babel plugin --out-dir build"
   },
   "husky": {
     "hooks": {
@@ -18,6 +18,7 @@
     }
   },
   "dependencies": {
+    "@babel/core": "^7.0.0-beta.40",
     "babylon": "^6.17.0",
     "graphql-tag": "^2.0.0"
   },
@@ -25,11 +26,9 @@
     "graphql": ">=0.9.6"
   },
   "devDependencies": {
-    "babel-cli": "6.x.x",
-    "babel-core": "^6.14.0",
+    "@babel/cli": "^7.0.0-beta.40",
+    "@babel/preset-env": "^7.0.0-beta.40",
     "babel-eslint": "^7.2.3",
-    "babel-preset-es2015-without-strict": "0.0.4",
-    "babel-preset-stage-1": "^6.13.0",
     "eslint": "^4.3.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.2.0",
