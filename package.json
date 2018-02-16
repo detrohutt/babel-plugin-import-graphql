@@ -9,8 +9,13 @@
   "keywords": ["babel-plugin", "apollo", "graphql", "gql", "extension", "import", "inline"],
   "repository": "detrohutt/babel-plugin-inline-import-graphql-ast",
   "scripts": {
-    "lint-js": "eslint plugin",
+    "lint": "eslint plugin",
     "prepublish": "babel -d build/ plugin/"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "dependencies": {
     "babylon": "^6.17.0",
@@ -31,6 +36,8 @@
     "eslint-plugin-node": "^5.1.1",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
+    "husky": "^0.15.0-rc.8",
+    "lint-staged": "^6.1.0",
     "prettier": "^1.10.2"
   }
 }
