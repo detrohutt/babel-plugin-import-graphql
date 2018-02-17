@@ -1,5 +1,23 @@
 # ChangeLog
 
+## v2.2.0 (February 17, 2018)
+
+### features
+
+* Multiple operations in a single GraphQL file
+
+* Named and namespace imports (can be mixed with default imports)
+
+### Maintenance
+
+* Update README.md
+
+* Upgrade all dependencies (including upgrading to Babel 7)
+
+* Add Jest and write initial tests covering import types
+
+* Improve, expand, and reconfigure toolchain (babel, eslint, prettier, lint-staged)
+
 ## v2.1.2 (January 26, 2018)
 
 ### Maintenance
