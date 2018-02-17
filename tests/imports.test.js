@@ -1,62 +1,107 @@
 import path from 'path'
 import { transformWithPlugin, rmVarKeywords, nameOf } from './util'
 
-// beforeAll(() => (process.env.NODE_PATH = __dirname))
-//
-// afterAll(() => console.log('NODE_PATH', process.env.NODE_PATH))
-
-describe('single simple query document', () => {
-  test('loads query as default import with any name', () => {
-    const { code } = transformWithPlugin('./fixtures/simple/default.js')
-    let simpleQuery
+describe('single named query document', () => {
+  test(`import namedQuery from './named.graphql'`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/named/default.js')
+    let namedQuery
     eval(code.slice(4))
-    expect(nameOf(simpleQuery)).toBe('simple')
+    expect(namedQuery.kind).toBe('Document')
   })
 
-  test('loads query as named import', () => {
-    const { code } = transformWithPlugin('./fixtures/simple/named.js')
-    let simple
+  test(`import { named } from './named.graphql'`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/named/named.js')
+    let named
     eval(code.slice(4))
-    expect(nameOf(simple)).toBe('simple')
+    expect(nameOf(named)).toBe('named')
   })
 
-  test('loads query as named import with alias', () => {
-    const { code } = transformWithPlugin('./fixtures/simple/alias.js')
-    let simpleAlias
+  test(`import { named as namedAlias } from './named.graphql'`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/named/alias.js')
+    let namedAlias
     eval(code.slice(4))
-    expect(nameOf(simpleAlias)).toBe('simple')
+    expect(nameOf(namedAlias)).toBe('named')
   })
 })
 
-describe('multiple simple operations document', () => {
-  test('loads first operation as default import with any name', () => {
-    const { code } = transformWithPlugin('./fixtures/multiple/default.js')
+describe('single unnamed query document', () => {
+  test(`import unnamedQuery from './unnamed.graphql'`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/unnamed/default.js')
+    let unnamedQuery
+    eval(code.slice(4))
+    expect(unnamedQuery.kind).toBe('Document')
+  })
+
+  test(`import { unnamed } from './unnamed.graphql'`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/unnamed/named.js')
+    let unnamed
+    eval(code.slice(4))
+    expect(unnamed.kind).toBe('Document')
+  })
+
+  test(`import { unnamed as unnamedAlias } from './unnamed.graphql'`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/unnamed/alias.js')
+    let unnamedAlias
+    eval(code.slice(4))
+    expect(unnamedAlias.kind).toBe('Document')
+  })
+})
+
+describe('multiple operations document', () => {
+  test(`import firstOperation from './multiple.graphql'`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/multiple/default.js')
     let firstOperation
     eval(code.slice(4))
     expect(firstOperation.definitions[0].name.value).toBe('first')
   })
 
-  test('loads operations out of order as named imports', () => {
-    const { code } = transformWithPlugin('./fixtures/multiple/reverse.js')
+  test(`import { second, first } from './multiple.graphql'`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/multiple/reverse.js')
     let first, second
     eval(rmVarKeywords(code))
     expect(nameOf(second)).toBe('second')
     expect(nameOf(first)).toBe('first')
   })
 
-  test('loads operations as named imports with aliases', () => {
-    const { code } = transformWithPlugin('./fixtures/multiple/aliases.js')
+  test(`import { first as firstAlias, second } from './multiple.graphql'`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/multiple/oneAlias.js')
+    let firstAlias, second
+    eval(rmVarKeywords(code))
+    expect(nameOf(firstAlias)).toBe('first')
+    expect(nameOf(second)).toBe('second')
+  })
+
+  test(`import { first as firstAlias, second as secondAlias } from './multiple.graphql'`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/multiple/aliases.js')
     let firstAlias, secondAlias
     eval(rmVarKeywords(code))
     expect(nameOf(firstAlias)).toBe('first')
     expect(nameOf(secondAlias)).toBe('second')
   })
 
-  test('loads operations as namespaced import', () => {
-    const { code } = transformWithPlugin('./fixtures/multiple/namespace.js')
+  test(`import * as ops from './multiple.graphql'`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/multiple/namespace.js')
     let ops
     eval(code.slice(4))
     expect(nameOf(ops.first)).toBe('first')
     expect(nameOf(ops.second)).toBe('second')
+  })
+
+  test(`import firstOperation, { second, third } from './multiple.graphql'`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/multiple/defaultAndNamed.js')
+    let firstOperation, second, third
+    eval(rmVarKeywords(code))
+    expect(nameOf(firstOperation)).toBe('first')
+    expect(nameOf(second)).toBe('second')
+    expect(nameOf(third)).toBe('third')
+  })
+
+  test(`import firstOperation, * as ops from './multiple.graphql'`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/multiple/defaultAndNamespace.js')
+    let firstOperation, ops
+    eval(rmVarKeywords(code))
+    expect(nameOf(firstOperation)).toBe('first')
+    expect(nameOf(ops.second)).toBe('second')
+    expect(nameOf(ops.third)).toBe('third')
   })
 })

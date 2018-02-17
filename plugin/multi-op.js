@@ -1,7 +1,11 @@
 let definitionRefs
 export function createDocPerOp(doc) {
-  definitionRefs = {}
+  if (doc.definitions.length === 1) {
+    const { name } = doc.definitions[0]
+    return name ? { default: doc, [name.value]: doc } : { default: doc }
+  }
 
+  definitionRefs = {}
   doc.definitions.forEach(def => {
     if (def.name) {
       let refs = new Set()

@@ -5,3 +5,7 @@ query first {
 mutation second {
   two
 }
+
+subscription third {
+  three
+}

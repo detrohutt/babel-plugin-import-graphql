@@ -1,4 +1,4 @@
-import path, { dirname } from 'path'
+import path, { dirname, delimiter } from 'path'
 import { existsSync, readFileSync } from 'fs'
 import { transformSync } from '@babel/core'
 import gql from 'graphql-tag'
@@ -17,37 +17,28 @@ export default ({ types: t }) => ({
       exit(curPath, { file: { opts: { filename: babelPath } }, opts: { nodePath } }) {
         const importPath = curPath.node.source.value
         if (importPath.endsWith('.graphql') || importPath.endsWith('.gql')) {
-          const importNames = curPath.node.specifiers.map(s => ({
-            imported: s.imported && s.imported.name,
-            local: s.local.name
-          }))
-          const fallbackResolvePaths = nodePath
-            ? nodePath.split(path.delimiter)
-            : process.env.NODE_PATH
-          const doc = processDoc(createDoc(importPath, babelPath, fallbackResolvePaths))
+          const fallbackPaths = nodePath ? nodePath.split(delimiter) : process.env.NODE_PATH
+          const doc = processDoc(createDoc(importPath, babelPath, fallbackPaths))
 
-          const operations = doc.definitions.filter(d => d.kind === 'OperationDefinition')
-          if (operations.length > 1) {
-            const docs = createDocPerOp(doc)
-            replaceByImportType(curPath, docs, importNames)
-          } else {
-            curPath.replaceWith(buildVariableAST(doc, importNames[0].local))
-          }
+          const replacements = buildReplacements(createDocPerOp(doc), curPath.node.specifiers)
+          replacements.length > 1
+            ? curPath.replaceWithMultiple(replacements)
+            : curPath.replaceWith(replacements[0])
         }
 
-        function replaceByImportType(curPath, docs, importNames) {
-          switch (curPath.node.specifiers[0].type) {
-            case 'ImportDefaultSpecifier':
-              curPath.replaceWith(buildVariableAST(docs.default, importNames[0].local))
-              break
-            case 'ImportNamespaceSpecifier':
-              curPath.replaceWith(buildVariableAST(docs, importNames[0].local))
-              break
-            default:
-              curPath.replaceWithMultiple(
-                importNames.map(n => buildVariableAST(docs[n.imported], n.local))
-              )
-          }
+        function buildReplacements(docs, specifiers) {
+          return specifiers.map(({ type, imported, local }) => {
+            switch (type) {
+              case 'ImportDefaultSpecifier':
+                return buildVariableAST(docs.default, local.name)
+              case 'ImportSpecifier':
+                return buildVariableAST(docs[imported.name] || docs.default, local.name)
+              case 'ImportNamespaceSpecifier':
+                return buildVariableAST(docs, local.name)
+              default:
+                throw new Error(`Unexpected import specifier type: ${type}`)
+            }
+          })
         }
 
         function buildVariableAST(graphqlAST, importName) {
