@@ -24,7 +24,7 @@ In `.babelrc` file:
 ...
 import myQuery from './query.graphql'
 ...
-export graphql(myQuery)(myComponent)
+export default graphql(myQuery)(myComponent)
 ```
 
 ### Potential use cases
@@ -161,7 +161,7 @@ It is necessary to clear the `node_modules/.cache/babel-loader` folder to re-tra
 ```JSON
 {
   "scripts": {
-    "start": "rimraf ./node_modules/.cache/babel-loader &&"
+    "start": "rimraf ./node_modules/.cache/babel-loader && node index.js"
   }
 }
 ```
