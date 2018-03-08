@@ -15,15 +15,36 @@ export default ({ types: t }) => ({
   visitor: {
     ImportDeclaration: {
       exit(curPath, { file: { opts: { filename: babelPath } }, opts: { nodePath } }) {
+        const importNames = curPath.node.specifiers
         const importPath = curPath.node.source.value
         if (importPath.endsWith('.graphql') || importPath.endsWith('.gql')) {
+          // Find and fetch the file, using node resolution/NODE_PATH if necessary.
           const fallbackPaths = nodePath ? nodePath.split(delimiter) : process.env.NODE_PATH
-          const doc = processDoc(createDoc(importPath, babelPath, fallbackPaths))
+          let absPath = resolve(importPath, babelPath)
+          if (!existsSync(absPath)) absPath = require.resolve(importPath, { paths: fallbackPaths })
+          const source = readFileSync(absPath).toString()
 
-          const replacements = buildReplacements(createDocPerOp(doc), curPath.node.specifiers)
-          replacements.length > 1
-            ? curPath.replaceWithMultiple(replacements)
-            : curPath.replaceWith(replacements[0])
+          // If the file doesn't contain query/mutation/subscription, insert raw text, else parse.
+          if (isSchemaLike(source)) {
+            curPath.replaceWith(buildVariableAST(source, importNames[0].local.name))
+          } else {
+            const doc = processDoc(createDoc(source, absPath))
+
+            const replacements = buildReplacements(createDocPerOp(doc), importNames)
+            replacements.length > 1
+              ? curPath.replaceWithMultiple(replacements)
+              : curPath.replaceWith(replacements[0])
+          }
+        }
+
+        function isSchemaLike(source) {
+          const content = source
+            .split(/(\r\n|\r|\n)+/)
+            .filter(line => !line.startsWith('#'))
+            .filter(line => line.length > 0)
+
+          const operationsPattern = /^(query|mutation|subscription)/
+          return !operationsPattern.test(content[0])
         }
 
         function buildReplacements(docs, specifiers) {
@@ -50,10 +71,7 @@ export default ({ types: t }) => ({
   }
 })
 
-function createDoc(importPath, babelPath, paths) {
-  let absPath = resolve(importPath, babelPath)
-  if (!existsSync(absPath)) absPath = require.resolve(importPath, { paths })
-  const source = readFileSync(absPath).toString()
+function createDoc(source, absPath) {
   let ast = null
   let fragmentDefs = []
 

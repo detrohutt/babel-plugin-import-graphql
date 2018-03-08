@@ -17,3 +17,5 @@ export function rmVarKeywords(code) {
 export function nameOf(operationDoc) {
   return operationDoc.definitions[0].name.value
 }
+
+export { default as dedent } from 'dedent'
