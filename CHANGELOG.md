@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v2.3.1 (March 8, 2018)
+
+### Maintenance
+
+* Update all dependencies/devDependencies
+
 ## v2.3.0 (March 8, 2018)
 
 ### Features
