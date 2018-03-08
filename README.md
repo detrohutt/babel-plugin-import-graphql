@@ -38,6 +38,12 @@ export default graphql(myQuery)(myComponent)
 
 ### Supported features
 
+#### Schema-like `.gql`/`.graphql` files
+
+This package was originally intended only for frontend graphql files containing operations, which are to be parsed into GraphQL AST syntax before being inlined into the code.
+There is now limited support for files containing types and schema definitions.
+Specifically, only default import syntax is supported, and the entire file will be inlined as raw text. If there are specific features you'd like to see for use with schema-like files, let me know.
+
 #### In `.gql`/`.graphql` files
 
 * Multiple operations (queries/mutations/subscriptions) per file

@@ -1,8 +1,18 @@
 # ChangeLog
 
+## v2.3.0 (March 8, 2018)
+
+### Features
+
+* Initial support for schema-like files
+
+### Maintenance
+
+* Fix typos in README
+
 ## v2.2.0 (February 17, 2018)
 
-### features
+### Features
 
 * Multiple operations in a single GraphQL file
 
