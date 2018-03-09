@@ -105,3 +105,13 @@ describe('multiple operations document', () => {
     expect(nameOf(ops.third)).toBe('third')
   })
 })
+
+describe('single fragment document', () => {
+  test(`inlines as a FragmentDefinition`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/fragment/simple.js')
+    let frag
+    eval(code.slice(4))
+    expect(frag.kind).toBe('Document')
+    expect(frag.definitions[0].kind).toBe('FragmentDefinition')
+  })
+})

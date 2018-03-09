@@ -45,7 +45,7 @@ export default ({ types: t }) => ({
             .filter(line => !line.startsWith('#'))
             .filter(line => line.length > 0)
 
-          const operationsPattern = /^(query|mutation|subscription)/
+          const operationsPattern = /^(fragment|query|mutation|subscription)/
           return !operationsPattern.test(content[0])
         }
 
