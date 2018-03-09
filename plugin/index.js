@@ -5,6 +5,7 @@ import gql from 'graphql-tag'
 
 import { createDocPerOp } from './multi-op'
 
+const newlinePattern = /(\r\n|\r|\n)+/
 let resolve
 export default ({ types: t }) => ({
   manipulateOptions({ resolveModuleSource }) {
@@ -39,7 +40,8 @@ export default ({ types: t }) => ({
 
         function isSchemaLike(source) {
           const content = source
-            .split(/(\r\n|\r|\n)+/)
+            .split(newlinePattern)
+            .filter(line => !newlinePattern.test(line))
             .filter(line => !line.startsWith('#'))
             .filter(line => line.length > 0)
 
@@ -80,7 +82,7 @@ function createDoc(source, absPath) {
       processImports(getImportStatements(source), absPath)
 
       function getImportStatements(src) {
-        return src.split(/(\r\n|\r|\n)+/).filter(line => line.startsWith('#import'))
+        return src.split(newlinePattern).filter(line => line.startsWith('#import'))
       }
 
       function processImports(imports, relFile) {

@@ -1,5 +1,15 @@
 # ChangeLog
 
+## v2.3.2 (March 9, 2018)
+
+### Fixes
+
+* Fix operations with fragments inlining as raw text
+
+### Maintenance
+
+* Add initial test for fragments
+
 ## v2.3.1 (March 8, 2018)
 
 ### Maintenance

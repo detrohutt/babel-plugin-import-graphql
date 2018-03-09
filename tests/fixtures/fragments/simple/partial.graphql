@@ -1,0 +1,8 @@
+#import "./fragment.graphql"
+
+query full {
+  thing {
+    part
+    ...frag
+  }
+}
