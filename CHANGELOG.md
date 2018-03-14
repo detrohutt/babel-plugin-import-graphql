@@ -1,5 +1,15 @@
 # ChangeLog
 
+## v2.3.4 (March 14, 2018)
+
+### Fixes
+
+* Pin versions of babel packages which were causing issue [#24](https://github.com/detrohutt/babel-plugin-inline-import-graphql-ast/issues/24)
+
+### Maintenance
+
+* Begin including package-lock.json file for users of NPM
+
 ## v2.3.3 (March 9, 2018)
 
 ### Fixes
