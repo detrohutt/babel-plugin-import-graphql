@@ -65,7 +65,9 @@ export default ({ types: t }) => ({
         }
 
         function buildVariableAST(graphqlAST, importName) {
-          const { ast } = transformSync(`var ${importName} = ${JSON.stringify(graphqlAST)}`)
+          const { ast } = transformSync(`var ${importName} = ${JSON.stringify(graphqlAST)}`, {
+            ast: true
+          })
           return ast.program.body[0]
         }
       }

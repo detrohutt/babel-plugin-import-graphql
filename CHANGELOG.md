@@ -1,5 +1,13 @@
 # ChangeLog
 
+## v2.3.5 (March 15, 2018)
+
+### Maintenance
+
+* Adjust code to conform to relevant breaking change in @babel/core@7.0.0-beta.41 (more forward-compatible solution to "bug" from [#24](https://github.com/detrohutt/babel-plugin-inline-import-graphql-ast/issues/24))
+* Upgrade @babel/core dependency to 7.0.0-beta.42
+* Improve tests code
+
 ## v2.3.4 (March 14, 2018)
 
 ### Fixes

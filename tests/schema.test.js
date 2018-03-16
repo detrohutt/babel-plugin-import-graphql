@@ -5,7 +5,7 @@ describe('simple schema document', () => {
   test(`inlines as raw unparsed text'`, () => {
     const { code } = transformWithPlugin('./fixtures/schema/simple/default.js')
     let schema
-    eval(code.slice(4))
+    eval(code)
     expect(schema).toBe(
       dedent`schema {
         query: Query

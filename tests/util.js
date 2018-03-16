@@ -2,12 +2,14 @@ import path from 'path'
 import { transformFileSync } from '@babel/core'
 
 export function transformWithPlugin(pathname) {
-  return transformFileSync(path.join(__dirname, pathname), {
-    plugins: [path.join(__dirname, '../plugin/index.js')]
+  const { code, ast } = transformFileSync(path.join(__dirname, pathname), {
+    plugins: [path.join(__dirname, '../plugin/index.js')],
+    ast: true
   })
+  return { code: rmVarKeywords(code), ast }
 }
 
-export function rmVarKeywords(code) {
+function rmVarKeywords(code) {
   return code
     .split('\n')
     .map(line => (line.startsWith('var ') ? line.slice(4) : line))

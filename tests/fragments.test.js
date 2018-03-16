@@ -5,7 +5,7 @@ describe('simple query with imported fragment', () => {
   test(`inlines as parsed doc containing FragmentDefinition`, () => {
     const { code } = transformWithPlugin('./fixtures/fragments/simple/simple.js')
     let fullQuery
-    eval(code.slice(4))
+    eval(code)
     expect(fullQuery.kind).toBe('Document')
     expect(fullQuery.definitions).toHaveLength(2)
     expect(fullQuery.definitions[0].kind).toBe('OperationDefinition')
