@@ -44,6 +44,7 @@ export default ({ types: t }) => ({
             .filter(line => !newlinePattern.test(line))
             .filter(line => !line.startsWith('#'))
             .filter(line => line.length > 0)
+            .map(line => line.trimLeft())
 
           const operationsPattern = /^(fragment|query|mutation|subscription)/
           return !operationsPattern.test(content[0])

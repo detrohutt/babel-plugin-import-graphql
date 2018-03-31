@@ -1,5 +1,15 @@
 # ChangeLog
 
+## v2.3.6 (March 30, 2018)
+
+### Fixes
+
+* Fix operation files with top level indentation being mistaken for schema files
+
+### Maintenance
+
+* Add regression tests for above fix
+
 ## v2.3.5 (March 15, 2018)
 
 ### Maintenance
