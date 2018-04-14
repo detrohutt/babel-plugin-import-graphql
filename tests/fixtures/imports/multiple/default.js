@@ -1,1 +1,1 @@
-import firstOperation from './multiple.graphql'
+import firstOperation from '../../shared/multiple.graphql'

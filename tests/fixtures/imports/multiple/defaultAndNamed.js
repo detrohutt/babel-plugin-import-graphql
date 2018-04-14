@@ -1,1 +1,1 @@
-import firstOperation, { second, third } from './multiple.graphql'
+import firstOperation, { second, third } from '../../shared/multiple.graphql'

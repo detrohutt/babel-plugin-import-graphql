@@ -1,1 +1,1 @@
-import { unnamed } from './unnamed.graphql'
+import { unnamed } from '../../shared/unnamed.graphql'

@@ -1,1 +1,1 @@
-import unnamedQuery from './unnamed.graphql'
+import unnamedQuery from '../../shared/unnamed.graphql'

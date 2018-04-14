@@ -1,1 +1,1 @@
-import * as ops from './multiple.graphql'
+import * as ops from '../../shared/multiple.graphql'

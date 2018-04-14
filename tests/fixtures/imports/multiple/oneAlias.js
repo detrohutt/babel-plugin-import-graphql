@@ -1,1 +1,1 @@
-import { first as firstAlias, second } from './multiple.graphql'
+import { first as firstAlias, second } from '../../shared/multiple.graphql'

@@ -1,1 +1,1 @@
-import { unnamed as unnamedAlias } from './unnamed.graphql'
+import { unnamed as unnamedAlias } from '../../shared/unnamed.graphql'

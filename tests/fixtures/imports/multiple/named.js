@@ -1,1 +1,1 @@
-import { first, second } from './multiple.graphql'
+import { first, second } from '../../shared/multiple.graphql'

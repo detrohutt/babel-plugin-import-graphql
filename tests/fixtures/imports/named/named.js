@@ -1,1 +1,1 @@
-import { named } from './named.graphql'
+import { named } from '../../shared/named.graphql'

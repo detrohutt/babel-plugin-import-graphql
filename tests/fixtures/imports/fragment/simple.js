@@ -1,1 +1,1 @@
-import frag from './fragment.graphql'
+import frag from '../../shared/fragment.graphql'
