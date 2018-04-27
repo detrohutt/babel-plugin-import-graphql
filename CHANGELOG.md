@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v2.3.7 (April 26, 2018)
+
+### Maintenance
+
+* Update dependencies
+
 ## v2.3.6 (March 30, 2018)
 
 ### Fixes
