@@ -19,31 +19,31 @@
     }
   },
   "dependencies": {
-    "@babel/core": "7.0.0-beta.42",
-    "graphql-tag": "^2.8.0"
+    "@babel/core": "7.0.0-beta.46",
+    "graphql-tag": "^2.9.1"
   },
   "peerDependencies": {
     "graphql": ">=0.9.6"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.42",
-    "@babel/preset-env": "^7.0.0-beta.42",
+    "@babel/cli": "^7.0.0-beta.46",
+    "@babel/preset-env": "^7.0.0-beta.46",
     "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "^8.2.2",
-    "babel-jest": "^22.4.1",
+    "babel-eslint": "^8.2.3",
+    "babel-jest": "^22.4.3",
     "dedent": "^0.7.0",
-    "eslint": "^4.18.2",
+    "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.9.0",
-    "eslint-plugin-jest": "^21.13.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-jest": "^21.15.1",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "graphql": "^0.13.1",
+    "eslint-plugin-standard": "^3.1.0",
+    "graphql": "^0.13.2",
     "husky": "^0.15.0-rc.8",
-    "jest": "^22.4.2",
-    "lint-staged": "^7.0.0",
-    "prettier": "^1.11.1"
+    "jest": "^22.4.3",
+    "lint-staged": "^7.0.5",
+    "prettier": "^1.12.1"
   },
   "engines": {
     "node": ">= 4.x"
