@@ -1,5 +1,18 @@
 # ChangeLog
 
+## v2.3.8 (May 15, 2018)
+
+### Fixes
+
+* Refactor plugin to not have direct dependency on @babel/core (hopefully fixing #30)
+* Update package-lock.json that was not updated for version 2.3.7
+
+### Maintenance
+
+* Automate updating of package-lock.json and yarn.lock
+* Remove undocumented `requireGql` export
+* Update all dependencies
+
 ## v2.3.7 (April 26, 2018)
 
 ### Maintenance
