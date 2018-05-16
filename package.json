@@ -19,15 +19,15 @@
     }
   },
   "dependencies": {
-    "graphql-tag": "^2.9.1"
+    "graphql-tag": "^2.9.2"
   },
   "peerDependencies": {
     "graphql": ">=0.9.6"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.46",
-    "@babel/core": "7.0.0-beta.46",
-    "@babel/preset-env": "^7.0.0-beta.46",
+    "@babel/cli": "^7.0.0-beta.47",
+    "@babel/core": "7.0.0-beta.47",
+    "@babel/preset-env": "^7.0.0-beta.47",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^8.2.3",
     "babel-jest": "^22.4.3",
@@ -42,7 +42,7 @@
     "graphql": "^0.13.2",
     "husky": "^0.15.0-rc.8",
     "jest": "^22.4.3",
-    "lint-staged": "^7.0.5",
+    "lint-staged": "^7.1.0",
     "prettier": "^1.12.1"
   },
   "engines": {
