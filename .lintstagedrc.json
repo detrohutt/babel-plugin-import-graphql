@@ -1,6 +1,7 @@
 {
   "linters": {
     "*.js": ["eslint --fix", "prettier --write", "git add"],
+    "package.json": ["./update-lock-files", "prettier --write", "git add"],
     "*.json": ["prettier --write", "git add"]
   }
 }

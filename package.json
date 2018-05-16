@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "eslint plugin",
     "test": "jest",
-    "prepublish": "babel plugin --out-dir build"
+    "prepare": "babel plugin --out-dir build"
   },
   "husky": {
     "hooks": {
