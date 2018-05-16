@@ -1,6 +1,6 @@
 import { join } from 'path'
 
-import { requireGql } from '../plugin'
+import { requireGql } from '../plugin/requireGql'
 import { dedent } from './util'
 
 describe('parse client-side graphql file at runtime', () => {

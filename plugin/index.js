@@ -1,11 +1,10 @@
 import { delimiter } from 'path'
 import { existsSync } from 'fs'
-import { transformSync } from '@babel/core'
 
 import { requireGql, defaultResolve } from './requireGql'
 
 let resolve
-export default ({ types: t }) => ({
+export default ({ types: t, template }) => ({
   manipulateOptions({ resolveModuleSource }) {
     if (!resolve) {
       resolve = resolveModuleSource || defaultResolve
@@ -13,18 +12,20 @@ export default ({ types: t }) => ({
   },
   visitor: {
     ImportDeclaration: {
-      exit(curPath, { file: { opts: { filename: babelPath } }, opts: { nodePath } }) {
-        const importNames = curPath.node.specifiers
+      exit(curPath, { opts, file }) {
         const importPath = curPath.node.source.value
         if (importPath.endsWith('.graphql') || importPath.endsWith('.gql')) {
           // Find the file, using node resolution/NODE_PATH if necessary.
-          const fallbackPaths = nodePath ? nodePath.split(delimiter) : process.env.NODE_PATH
-          let absPath = resolve(importPath, babelPath)
+          const fallbackPaths = opts.nodePath
+            ? opts.nodePath.split(delimiter)
+            : process.env.NODE_PATH
+          let absPath = resolve(importPath, file.opts.filename)
           if (!existsSync(absPath)) absPath = require.resolve(importPath, { paths: fallbackPaths })
 
           // Analyze the file, returning either schema source (str) or a docs object containing ops.
           const result = requireGql(absPath, { resolve, nowrap: false })
 
+          const importNames = curPath.node.specifiers
           if (typeof result === 'string') {
             curPath.replaceWith(buildVariableAST(result, importNames[0].local.name))
           } else {
@@ -51,14 +52,13 @@ export default ({ types: t }) => ({
         }
 
         function buildVariableAST(graphqlAST, importName) {
-          const { ast } = transformSync(`var ${importName} = ${JSON.stringify(graphqlAST)}`, {
-            ast: true
+          const buildAst = template(`var IMPORT_NAME = AST;`)
+          return buildAst({
+            IMPORT_NAME: t.identifier(importName),
+            AST: t.valueToNode(JSON.parse(JSON.stringify(graphqlAST)))
           })
-          return ast.program.body[0]
         }
       }
     }
   }
 })
-
-export { requireGql }

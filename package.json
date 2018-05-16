@@ -19,7 +19,6 @@
     }
   },
   "dependencies": {
-    "@babel/core": "7.0.0-beta.46",
     "graphql-tag": "^2.9.1"
   },
   "peerDependencies": {
@@ -27,6 +26,7 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.46",
+    "@babel/core": "7.0.0-beta.46",
     "@babel/preset-env": "^7.0.0-beta.46",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^8.2.3",
