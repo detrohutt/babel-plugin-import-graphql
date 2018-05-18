@@ -12,3 +12,12 @@ describe('simple query with imported fragment', () => {
     expect(fullQuery.definitions[1].kind).toBe('FragmentDefinition')
   })
 })
+
+describe('multiple operation document containing a fragment', () => {
+  test('allows import of fragment', () => {
+    const { code } = transformWithPlugin('./fixtures/fragments/mixed/mixed.js')
+    let notAnOperation
+    eval(code)
+    expect(notAnOperation.kind).toBe('Document')
+  })
+})
