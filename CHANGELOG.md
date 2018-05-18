@@ -1,5 +1,12 @@
 # ChangeLog
 
+## v2.4.0 (May 18, 2018)
+
+### Features
+
+* Add support for fragment-only files with multiple fragments
+* Add support for importing fragments from mixed files (containing fragments and operations)
+
 ## v2.3.8 (May 15, 2018)
 
 ### Fixes
