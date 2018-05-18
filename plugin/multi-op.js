@@ -1,5 +1,5 @@
 let definitionRefs
-export function createDocPerOp(doc) {
+export function createDocPerOp({ ast: doc, isOnlyFrags }) {
   if (doc.definitions.length === 1) {
     const { name } = doc.definitions[0]
     return name ? { default: doc, [name.value]: doc } : { default: doc }
@@ -15,8 +15,16 @@ export function createDocPerOp(doc) {
   })
 
   let docs = {}
+
+  if (!isOnlyFrags) {
+    while (doc.definitions[0].kind !== 'OperationDefinition') {
+      const [head, ...tail] = doc.definitions
+      doc.definitions = [...tail, head]
+    }
+  }
+
   doc.definitions.forEach((op, i) => {
-    if (op.kind === 'OperationDefinition') {
+    if (op.kind === 'OperationDefinition' || op.kind === 'FragmentDefinition') {
       if (!op.name) {
         throw new Error('Names are required for a document with multiple Queries/Mutations')
       }

@@ -115,3 +115,20 @@ describe('single fragment document', () => {
     expect(frag.definitions[0].kind).toBe('FragmentDefinition')
   })
 })
+
+describe('multiple fragments document with no operations', () => {
+  test(`handles named imports correctly`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/fragment/multiple.js')
+    let frag1, frag2, frag3
+    eval(code)
+    expect(frag1.kind).toBe('Document')
+    expect(frag1.definitions[0].kind).toBe('FragmentDefinition')
+  })
+
+  test(`handles default import correctly`, () => {
+    const { code } = transformWithPlugin('./fixtures/imports/fragment/multiDefault.js')
+    let frag
+    eval(code)
+    expect(frag.definitions[0].name.value).toBe('frag1')
+  })
+})

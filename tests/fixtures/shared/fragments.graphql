@@ -1,0 +1,13 @@
+fragment frag1 on Thing {
+  part1
+}
+
+fragment frag2 on Thing {
+  part2
+  part3
+}
+
+fragment frag3 on Thing {
+  ...frag1
+  ...frag2
+}

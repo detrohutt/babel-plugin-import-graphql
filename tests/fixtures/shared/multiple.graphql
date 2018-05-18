@@ -1,3 +1,7 @@
+fragment notAnOperation on Thing {
+  zero
+}
+
 query first {
   one
 }
