@@ -1,5 +1,19 @@
 # ChangeLog
 
+## v2.4.4 (May 27, 2018)
+
+### Maintenance
+
+* Update copyright in LICENSE
+* Update deprecation/migration info in README.md
+* Update package name, author, and repository in package.json
+
+## v2.4.2, v2.4.3 (May 27, 2018) \*\* Don't use these \*\*
+
+### Maintenance
+
+* Temporarily created a new repo on GitHub and published from that, but have now removed that repo and renamed the original repo instead.
+
 ## v2.4.1 (May 27, 2018)
 
 ### Maintenance
