@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v2.4.1 (May 27, 2018)
+
+### Maintenance
+
+* Deprecate this package in favor of `babel-plugin-import-graphql` (see README)
+
 ## v2.4.0 (May 18, 2018)
 
 ### Features
