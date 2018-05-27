@@ -3,7 +3,7 @@
 [![npm License](https://img.shields.io/npm/l/babel-plugin-import-graphql.svg)](https://www.npmjs.com/package/babel-plugin-import-graphql)
 [![donate](https://img.shields.io/badge/donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3AYURHRU7PMCL)
 
-# Babel Inline Import GraphQL AST
+# babel-plugin-import-graphql
 
 Babel plugin allowing `import` of `.graphql` and `.gql` files into `.js` and `.jsx` files.
 
