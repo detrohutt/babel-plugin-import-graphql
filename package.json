@@ -1,13 +1,13 @@
 {
-  "name": "babel-plugin-inline-import-graphql-ast",
+  "name": "babel-plugin-import-graphql",
   "version": "2.4.1",
   "description": "Babel plugin to make .gql/.graphql files importable",
-  "author": "Alexander Roberts <detrohutt@gmail.com>",
+  "author": "A.J. Roberts <detrohutt@gmail.com>",
   "license": "MIT",
   "main": "build/index.js",
   "files": ["build"],
   "keywords": ["babel-plugin", "apollo", "graphql", "gql", "extension", "import", "inline"],
-  "repository": "detrohutt/babel-plugin-inline-import-graphql-ast",
+  "repository": "detrohutt/babel-plugin-import-graphql",
   "scripts": {
     "lint": "eslint plugin",
     "test": "jest",

@@ -1,23 +1,27 @@
-[![npm Version](https://img.shields.io/npm/v/babel-plugin-inline-import-graphql-ast.svg)](https://www.npmjs.com/package/babel-plugin-inline-import-graphql-ast)
+[![npm Version](https://img.shields.io/npm/v/babel-plugin-import-graphql.svg)](https://www.npmjs.com/package/babel-plugin-import-graphql)
 [![npm Downloads](https://img.shields.io/npm/dm/babel-plugin-inline-import-graphql-ast.svg)](https://www.npmjs.com/package/babel-plugin-inline-import-graphql-ast)
-[![npm License](https://img.shields.io/npm/l/babel-plugin-inline-import-graphql-ast.svg)](https://www.npmjs.com/package/babel-plugin-inline-import-graphql-ast)
+[![npm License](https://img.shields.io/npm/l/babel-plugin-import-graphql.svg)](https://www.npmjs.com/package/babel-plugin-import-graphql)
 [![donate](https://img.shields.io/badge/donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3AYURHRU7PMCL)
 
 # Babel Inline Import GraphQL AST
 
 Babel plugin allowing `import` of `.graphql` and `.gql` files into `.js` and `.jsx` files.
 
----
+##### For users of the old package name (babel-plugin-inline-import-graphql-ast)
 
-<h2 style="color: red;">***Deprecated***</h2>
+<details>
 
-* As of May 27, 2018, the `babel-plugin-inline-import-graphql-ast` package name and the corresponding GitHub repo are deprecated. Please use [`babel-plugin-import-graphql` (NPM)](https://www.npmjs.com/package/babel-plugin-import-graphql) and [the new GitHub repo](https://github.com/detrohutt/babel-plugin-import-graphql) instead.
+<summary>Deprecation/Migration notes</summary>
 
-* `babel-plugin-import-graphql@2.x` will remain backwards compatible with the previous package so switching over is safe and easy.
-
-* `babel-plugin-import-graphql@2.4.2` is identical to `2.4.0` and `2.4.1` of `babel-plugin-inline-import-graphql-ast`, with the exception of the package name and `README.md` file.
+As of May 27, 2018, the `babel-plugin-inline-import-graphql-ast` package name is deprecated. Please use [`babel-plugin-import-graphql` (NPM)](https://www.npmjs.com/package/babel-plugin-import-graphql) instead.
 
 ### Migrating to babel-plugin-import-graphql
+
+#### Update your babel configuration
+
+###### Update `plugins` array:
+
+`babel-plugin-inline-import-graphql-ast` (or `inline-import-graphql-ast`) -> `import-graphql`.
 
 #### Update your `package.json` file
 
@@ -27,33 +31,29 @@ Babel plugin allowing `import` of `.graphql` and `.gql` files into `.js` and `.j
 
 ###### Make sure your version string is compatible:
 
-The first published version of `babel-plugin-import-graphql` is `2.4.2` so please make sure your version string matches that. For instance, `"babel-plugin-import-graphql": "^2.0.0"` is fine because of the caret.
+The first correct version of `babel-plugin-import-graphql` is `2.4.4` so please make sure your version string matches that. For instance, `"babel-plugin-import-graphql": "^2.0.0"` is fine because of the caret.
 
-If you've pinned to a specific version, you'll need to upgrade and pin to at least `2.4.2` or widen your version range to include it.
-
-#### Update your babel configuration
-
-###### Update `plugins` array:
-
-`babel-plugin-inline-import-graphql-ast` (or `inline-import-graphql-ast`) -> `import-graphql`.
+If you've pinned to a specific version, you'll need to upgrade and pin to at least `2.4.4` or widen your version range to include it.
 
 Congratulations, you're all set!
 
-> If you enjoy my package go [star the new repo](https://github.com/detrohutt/babel-plugin-import-graphql) or share on Twitter (and [follow me](https://twitter.com/detrohutt) for updates)!
+</details>
 
 ---
+
+> If you enjoy my package please [star the GitHub repo](https://github.com/detrohutt/babel-plugin-import-graphql) or share on Twitter (and [follow me](https://twitter.com/detrohutt) for updates)!
 
 ### Install
 
 ```bash
-$ yarn add -D babel-plugin-inline-import-graphql-ast
+$ yarn add -D babel-plugin-import-graphql
 ```
 
 In `.babelrc` file:
 
 ```JSON
 {
-  "plugins": ["inline-import-graphql-ast"]
+  "plugins": ["import-graphql"]
 }
 ```
 
