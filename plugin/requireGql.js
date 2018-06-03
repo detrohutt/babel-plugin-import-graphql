@@ -12,7 +12,7 @@ export const requireGql = (filepath, { resolve = defaultResolve, nowrap = true }
   filepath = isAbsolute(filepath) ? filepath : join(callerDirname(), filepath)
   const source = readFileSync(filepath).toString()
 
-  // If the file doesn't contain ops return raw text, else parse  and return docsMap object.
+  // If the file doesn't contain ops return raw text, else parse and return docsMap object.
   if (isSchemaLike(source)) return source
 
   const doc = processDoc(createDoc(source, filepath, resolve))
@@ -90,8 +90,8 @@ function createDoc(source, filepath, resolve) {
       return ast
     },
     get isMultiOp() {
-      const reducer = (acc, def) => (def.kind === 'OperationDefinition' ? (acc += 1) : acc)
-      const opCount = ast.definitions.reduce(reducer, 0)
+      const countReducer = (acc, def) => (def.kind === 'OperationDefinition' ? (acc += 1) : acc)
+      const opCount = ast.definitions.reduce(countReducer, 0)
       return opCount > 1
     },
     get isOnlyFrags() {

@@ -1,1 +1,1 @@
-import { frag1, frag2, frag3 } from '../../shared/fragments.graphql'
+import { frag3, frag1, frag2 } from '../../shared/fragments.graphql'

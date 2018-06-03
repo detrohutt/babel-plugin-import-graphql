@@ -48,16 +48,18 @@ describe('parse client-side graphql file at runtime', () => {
 })
 
 describe('parse schema file at runtime', () => {
-  test('absolute filepath argument', () => {
+  test('returns raw source text', () => {
     const schema = requireGql('./fixtures/shared/schema.graphql')
     expect(schema).toBe(
-      dedent`schema {
-            query: Query
-          }
+      dedent`
+        schema {
+          query: Query
+        }
 
-          type Query {
-            test: String
-          }\n`
+        type Query {
+          test: String
+        }\n
+      `
     )
   })
 })
