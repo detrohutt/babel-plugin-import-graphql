@@ -6,9 +6,7 @@ import { requireGql, defaultResolve } from './requireGql'
 let resolve
 export default ({ types: t, template }) => ({
   manipulateOptions({ resolveModuleSource }) {
-    if (!resolve) {
-      resolve = resolveModuleSource || defaultResolve
-    }
+    resolve = resolveModuleSource || defaultResolve
   },
   visitor: {
     ImportDeclaration: {
