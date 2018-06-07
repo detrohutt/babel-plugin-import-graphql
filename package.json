@@ -22,7 +22,8 @@
     "graphql-tag": "^2.9.2"
   },
   "peerDependencies": {
-    "graphql": ">=0.9.6"
+    "graphql": ">=0.9.6",
+    "graphql-tag": "^2.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.47",

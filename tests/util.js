@@ -1,9 +1,9 @@
 import path from 'path'
 import { transformFileSync } from '@babel/core'
 
-export function transformWithPlugin(pathname) {
+export function transformWithPlugin(pathname, opts = {}) {
   const { code, ast } = transformFileSync(path.join(__dirname, pathname), {
-    plugins: [path.join(__dirname, '../plugin/index.js')],
+    plugins: [[path.join(__dirname, '../plugin/index.js'), opts]],
     ast: true
   })
   return { code: rmVarKeywords(code), ast }

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`runtime option imports gql only once, even with multiple import lines 1`] = `
+"\\"use strict\\";
+
+_graphqlTag = _interopRequireDefault(require(\\"graphql-tag\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+firstOperation = (0, _graphqlTag.default)(\\"query first {\\\\n  one\\\\n}\\\\n\\");
+namedQuery = (0, _graphqlTag.default)(\\"query named {\\\\n  test\\\\n}\\\\n\\");"
+`;

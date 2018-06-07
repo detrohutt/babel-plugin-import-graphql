@@ -2,7 +2,7 @@ import { readFileSync } from 'fs'
 import path, { isAbsolute, join, dirname } from 'path'
 import gql from 'graphql-tag'
 
-import { createDocPerOp } from './multi-op'
+import { createDocPerOp } from './multiOp'
 
 const newlinePattern = /(\r\n|\r|\n)+/
 
