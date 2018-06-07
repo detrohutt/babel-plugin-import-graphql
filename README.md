@@ -1,11 +1,11 @@
 [![npm Version](https://img.shields.io/npm/v/babel-plugin-import-graphql.svg)](https://www.npmjs.com/package/babel-plugin-import-graphql)
-[![npm Downloads](https://img.shields.io/npm/dm/babel-plugin-inline-import-graphql-ast.svg)](https://www.npmjs.com/package/babel-plugin-inline-import-graphql-ast)
+[![npm Downloads](https://img.shields.io/npm/dt/babel-plugin-inline-import-graphql-ast.svg)](https://www.npmjs.com/package/babel-plugin-inline-import-graphql-ast)
 [![npm License](https://img.shields.io/npm/l/babel-plugin-import-graphql.svg)](https://www.npmjs.com/package/babel-plugin-import-graphql)
 [![donate](https://img.shields.io/badge/donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3AYURHRU7PMCL)
 
 # babel-plugin-import-graphql
 
-Babel plugin allowing `import` of `.graphql` and `.gql` files into `.js` and `.jsx` files.
+Babel plugin enabling `import` syntax for `.graphql` and `.gql` files.
 
 ##### For users of the old package name (babel-plugin-inline-import-graphql-ast)
 
@@ -43,7 +43,13 @@ Congratulations, you're all set!
 
 > If you enjoy my package please [star the GitHub repo](https://github.com/detrohutt/babel-plugin-import-graphql) or share on Twitter (and [follow me](https://twitter.com/detrohutt) for updates)!
 
-### Install
+## Prerequisites
+
+* `babel-core@^6.26.3` or `@babel/core@^7.0.0-beta.40` (Lower betas may work but weren't tested)
+
+* `graphql-tag@^2.1.0` (only if using the `runtime` option described below)
+
+## Install
 
 ```bash
 $ yarn add -D babel-plugin-import-graphql
@@ -57,7 +63,19 @@ In `.babelrc` file:
 }
 ```
 
-### Usage
+Each time you modify a GraphQL file, the `node_modules/.cache/babel-loader` folder must be cleared for the changes to take effect. I recommend prepending the relevant script in your `package.json` and rerunning the script when you change a GraphQL file:
+
+```JSON
+{
+  "scripts": {
+    "start": "rm -rf ./node_modules/.cache/babel-loader && node index.js"
+  }
+}
+```
+
+> Note: Windows users would need to use `rimraf` or another solution in place of `rm -rf`.
+
+## Basic Usage
 
 ```JavaScript
 ...
@@ -66,59 +84,26 @@ import myQuery from './query.graphql'
 export default graphql(myQuery)(myComponent)
 ```
 
-### Potential use cases
+## Supported features
 
-* Replaces `graphql-tag/loader` in projects where Webpack is unavailable(i.e. [NextJS](https://github.com/zeit/next.js/))
+### Schema files
 
-* Users of [create-react-app](https://github.com/facebook/create-react-app/) that want to avoid ejecting their app can use this package indirectly by using [react-app-rewire-inline-import-graphql-ast](https://github.com/detrohutt/react-app-rewire-inline-import-graphql-ast)
+Only default import syntax is supported, and the entire file will be inlined as raw text. If there are specific features you'd like to see for use with schema files, let me know.
 
-### Supported features
+### Operation/fragment files
 
-#### Schema-like `.gql`/`.graphql` files
+All variants of the [import syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) are supported for non-schema files, except `import './filename'`.
 
-This package was originally intended only for frontend graphql files containing operations, which are to be parsed into GraphQL AST syntax before being inlined into the code.
-There is now limited support for files containing types and schema definitions.
-Specifically, only default import syntax is supported, and the entire file will be inlined as raw text. If there are specific features you'd like to see for use with schema-like files, let me know.
+Feature | Description
+-|-
+Multiple operations/fragments per file | Multiple operations (queries/mutations/subscriptions) and/or fragments can be placed in a single file. However, in this case you cannot use unnamed operations/fragments. For example, `query { test }` would need to be `query someName { test }`.
+Default import | The first or only operation/fragment in a file will act as the default export. However, for backwards compatibility reasons, if there are both operations and fragments in a file, the first operation will act as the default export.
+Named imports | All operations/fragments, **including the default**, act as named exports.
+GraphQL file fragment imports | Fragments in one GraphQL file can be imported into another GraphQL file using this syntax: `#import "./fragment.graphql"`. These imports will be resolved recursively to any reasonable depth of files. Currently, all fragments in the named file will be imported and there is no way to import specific fragments. If you want that behavior, you can store a single fragment in each file.
 
-#### In `.gql`/`.graphql` files
+## Full example
 
-* Multiple operations (queries/mutations/subscriptions) per file
-* Fragment imports
-  * `#import "./fragment.graphql"`
-
-#### In `.js`/`.jsx` files
-
-##### For both unnamed (`query { test }`) and named (`query named { test }`) operations
-
-* Default import - `import anyName from './file.graphql'`
-
-_note: when multiple operation exist in one file, the first is used as the default export_
-
-##### For named operations only
-
-* Named imports `import { first, second as secondQuery } from './file.graphql'`
-* Namespace imports `import * as ops from './file.graphql'` (example usage: `graphql(ops.third)`)
-* Any combination of the above `import firstQuery, * as ops from './file.graphql'`
-
-File for examples above:
-
-```GraphQL
-query first {
-  test1
-}
-
-mutation second {
-  test2
-}
-
-subscription third {
-  test3
-}
-```
-
-### Full example
-
-##### Before (without this plugin):
+#### Before (without this plugin):
 
 ProductsPage.js
 
@@ -148,7 +133,7 @@ const productsQuery = gql`
 export default graphql(productsQuery)(ProductsPage)
 ```
 
-##### After (with this plugin):
+#### After (with this plugin):
 
 productFragment.graphql
 
@@ -189,34 +174,19 @@ class ProductsPage extends Component {
 export default graphql(myImportedQuery)(ProductsPage)
 ```
 
-### Options
+## Options
 
-* `nodePath` -- _Intended primarily for use with [react-app-rewire-inline-import-graphql-ast](https://github.com/detrohutt/react-app-rewire-inline-import-graphql-ast)_ Takes a string like the [`NODE_PATH`](https://nodejs.org/api/modules.html#modules_loading_from_the_global_folders) environment variable and is used to allow resolution of absolute paths to your `.gql`/`.graphql` files. Note this currently is NOT respected for fragment imports. If you already have your `NODE_PATH` variable set in your environment, you don't need to set this option.
+Option | Description
+-|-
+`nodePath` | _Intended primarily for use with [react-app-rewire-inline-import-graphql-ast](https://github.com/detrohutt/react-app-rewire-inline-import-graphql-ast)_ Takes a string like the [`NODE_PATH`](https://nodejs.org/api/modules.html#modules_loading_from_the_global_folders) environment variable and is used to allow resolution of absolute paths to your `.gql`/`.graphql` files. Note this currently is NOT respected for fragment imports. If you already have your `NODE_PATH` variable set in your environment, you don't need to set this option.
+`runtime` | Instead of inlining the parsed AST object, which is very large, this option inlines your GraphQL source code along with an import of the `gql` function from `graphql-tag` and parses your GraphQL source code with `gql` at runtime. **This option requires `graphql-tag` to be installed as a peerDependency.**
 
-### How it works
+## For users of create-react-app
 
-When you `import` a `.graphql` or `.gql` file, it is parsed into a GraphQL AST object by the `gql` function from `graphql-tag`. This AST object is inserted directly into the _importing file_, in a variable with the name defined in the _import statement_.
+[create-react-app](https://github.com/facebook/create-react-app/) users can use this package without ejecting via [react-app-rewire-inline-import-graphql-ast](https://github.com/detrohutt/react-app-rewire-inline-import-graphql-ast)
 
-### Caveats
+## Credits
 
-#### Applying changes to GraphQL files
-
-It is necessary to clear the `node_modules/.cache/babel-loader` folder to re-transpile your `.gql`/`.graphql` files each time one is changed. The recommended method is prepending the relevant script in your `package.json` and rerunning the script when you change a GraphQL file:
-
-```JSON
-{
-  "scripts": {
-    "start": "rimraf ./node_modules/.cache/babel-loader && node index.js"
-  }
-}
-```
-
-Note you'd need the rimraf dependency installed in this example.
-
-#### Note for users of Babel 6
-
-This plugin has problems with `babel-generator` before version `6.26.1`, which is included in `babel-core` and `babel-cli`. Unfortunately, the `6.26.1` update only applied to `babel-generator` itself, without bumping the version of the other packages. This means you need a copy of `babel-core@6.26.0` or `babel-cli@6.26.0` added to your project after February 3rd, 2018. If one of these was added prior to that date, you'll need to remove your `node_modules` folder, along with your `package-lock.json` or `yarn.lock` file, and reinstall your dependencies.
-
-### Credits
+The behavior of this plugin is inspired by and mostly mirrors the [graphql-tag Webpack loader](https://github.com/apollographql/graphql-tag#webpack-preprocessing-with-graphql-tagloader)
 
 This package started out as a modified version of [babel-plugin-inline-import](https://www.npmjs.com/package/babel-plugin-inline-import)

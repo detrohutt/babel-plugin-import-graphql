@@ -1,5 +1,17 @@
 # ChangeLog
 
+## v2.5.0 (June 7, 2018)
+
+### Features
+
+* Reduce output size of AST ({ runtime: false }) by 30%+ :fire: (:clap: @loganfsmyth and @supukarmin)
+* Add new 'runtime' option for even smaller output :mag: (if enabled, 'graphql-tag' is a peerDependency)
+
+### Maintenance
+
+* Update all devDependencies :arrows_counterclockwise:
+* Improve the README :tada:
+
 ## v2.4.4 (May 27, 2018)
 
 ### Maintenance
