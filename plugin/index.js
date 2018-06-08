@@ -11,20 +11,6 @@ let seenJSFiles = new Set()
 export default ({ types: t, template }) => ({
   manipulateOptions({ resolveModuleSource, plugins }) {
     resolve = resolveModuleSource || defaultResolve
-
-    const thisPlugin = plugins.find(p => {
-      const key = p.key || p[0].key
-      return key.indexOf('babel-plugin-import-graphql') !== -1
-    })
-
-    const options = thisPlugin.options || thisPlugin[1]
-    if (options.runtime) {
-      try {
-        require('graphql-tag')
-      } catch (e) {
-        throw new Error(missingOptionalDep)
-      }
-    }
   },
   visitor: {
     ImportDeclaration: {
@@ -33,6 +19,14 @@ export default ({ types: t, template }) => ({
         const jsFilename = file.opts.filename
 
         if (importPath.endsWith('.graphql') || importPath.endsWith('.gql')) {
+          if (opts.runtime) {
+            try {
+              require('graphql-tag')
+            } catch (e) {
+              throw new Error(missingOptionalDep)
+            }
+          }
+
           // Find the file, using node resolution/NODE_PATH if necessary.
           const fallbackPaths = opts.nodePath
             ? opts.nodePath.split(delimiter)
