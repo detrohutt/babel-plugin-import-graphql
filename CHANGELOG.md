@@ -1,6 +1,12 @@
 # ChangeLog
 
-## v.2.5.1 (June 8, 2018)
+## v2.5.2 (June 8, 2018)
+
+### Fixes
+
+- Continue fixing compatibility with Babel 6
+
+## v2.5.1 (June 8, 2018)
 
 ### Fixes
 
