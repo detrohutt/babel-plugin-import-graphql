@@ -5,7 +5,7 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
   describe('simple query with imported fragment', () => {
     test('inlines as parsed doc containing FragmentDefinition', () => {
       const { code } = transformWithPlugin('./fixtures/fragments/simple/simple.js', opts)
-      let _graphqlTag, fullQuery
+      let _graphqlTag, _graphqlTag2, fullQuery
       eval(code)
       expect(fullQuery.kind).toBe('Document')
       expect(fullQuery.definitions).toHaveLength(2)

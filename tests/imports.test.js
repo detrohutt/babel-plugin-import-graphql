@@ -5,21 +5,21 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
   describe('single named query document', () => {
     test(`import namedQuery from '../../shared/named.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/named/default.js', opts)
-      let _graphqlTag, namedQuery
+      let _graphqlTag, _graphqlTag2, namedQuery
       eval(code)
       expect(namedQuery.kind).toBe('Document')
     })
 
     test(`import { named } from '../../shared/named.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/named/named.js', opts)
-      let _graphqlTag, named
+      let _graphqlTag, _graphqlTag2, named
       eval(code)
       expect(nameOf(named)).toBe('named')
     })
 
     test(`import { named as namedAlias } from '../../shared/named.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/named/alias.js', opts)
-      let _graphqlTag, namedAlias
+      let _graphqlTag, _graphqlTag2, namedAlias
       eval(code)
       expect(nameOf(namedAlias)).toBe('named')
     })
@@ -28,21 +28,21 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
   describe('single unnamed query document', () => {
     test(`import unnamedQuery from '../../shared/unnamed.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/unnamed/default.js', opts)
-      let _graphqlTag, unnamedQuery
+      let _graphqlTag, _graphqlTag2, unnamedQuery
       eval(code)
       expect(unnamedQuery.kind).toBe('Document')
     })
 
     test(`import { unnamed } from '../../shared/unnamed.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/unnamed/named.js', opts)
-      let _graphqlTag, unnamed
+      let _graphqlTag, _graphqlTag2, unnamed
       eval(code)
       expect(unnamed.kind).toBe('Document')
     })
 
     test(`import { unnamed as unnamedAlias } from '../../shared/unnamed.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/unnamed/alias.js', opts)
-      let _graphqlTag, unnamedAlias
+      let _graphqlTag, _graphqlTag2, unnamedAlias
       eval(code)
       expect(unnamedAlias.kind).toBe('Document')
     })
@@ -51,21 +51,21 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
   describe('multiple operations document with fragment at top', () => {
     test(`import { notAnOperation } from '../../shared/multiple.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/fragment/mixed.js', opts)
-      let _graphqlTag, notAnOperation
+      let _graphqlTag, _graphqlTag2, notAnOperation
       eval(code)
       expect(notAnOperation.kind).toBe('Document')
     })
 
     test(`import firstOperation from '../../shared/multiple.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/multiple/default.js', opts)
-      let _graphqlTag, firstOperation
+      let _graphqlTag, _graphqlTag2, firstOperation
       eval(code)
       expect(firstOperation.definitions[0].name.value).toBe('first')
     })
 
     test(`import { second, first } from '../../shared/multiple.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/multiple/reverse.js', opts)
-      let _graphqlTag, first, second
+      let _graphqlTag, _graphqlTag2, first, second
       eval(code)
       expect(nameOf(second)).toBe('second')
       expect(nameOf(first)).toBe('first')
@@ -73,7 +73,7 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
 
     test(`import { first as firstAlias, second } from '../../shared/multiple.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/multiple/oneAlias.js', opts)
-      let _graphqlTag, firstAlias, second
+      let _graphqlTag, _graphqlTag2, firstAlias, second
       eval(code)
       expect(nameOf(firstAlias)).toBe('first')
       expect(nameOf(second)).toBe('second')
@@ -81,7 +81,7 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
 
     test(`import { first as firstAlias, second as secondAlias } from '../../shared/multiple.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/multiple/aliases.js', opts)
-      let _graphqlTag, firstAlias, secondAlias
+      let _graphqlTag, _graphqlTag2, firstAlias, secondAlias
       eval(code)
       expect(nameOf(firstAlias)).toBe('first')
       expect(nameOf(secondAlias)).toBe('second')
@@ -89,7 +89,7 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
 
     test(`import * as ops from '../../shared/multiple.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/multiple/namespace.js', opts)
-      let _graphqlTag, ops
+      let _graphqlTag, _graphqlTag2, ops
       eval(code)
       expect(nameOf(ops.notAnOperation)).toBe('notAnOperation')
       expect(nameOf(ops.first)).toBe('first')
@@ -98,7 +98,7 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
 
     test(`import firstOperation, { second, third } from '../../shared/multiple.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/multiple/defaultAndNamed.js', opts)
-      let _graphqlTag, firstOperation, second, third
+      let _graphqlTag, _graphqlTag2, firstOperation, second, third
       eval(code)
       expect(nameOf(firstOperation)).toBe('first')
       expect(nameOf(second)).toBe('second')
@@ -110,7 +110,7 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
         './fixtures/imports/multiple/defaultAndNamespace.js',
         opts
       )
-      let _graphqlTag, firstOperation, ops
+      let _graphqlTag, _graphqlTag2, firstOperation, ops
       eval(code)
       expect(nameOf(firstOperation)).toBe('first')
       expect(nameOf(ops.second)).toBe('second')
@@ -121,7 +121,7 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
   describe('single fragment document', () => {
     test(`import frag from '../../shared/fragment.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/fragment/simple.js', opts)
-      let _graphqlTag, frag
+      let _graphqlTag, _graphqlTag2, frag
       eval(code)
       expect(frag.kind).toBe('Document')
       expect(frag.definitions[0].kind).toBe('FragmentDefinition')
@@ -131,14 +131,14 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
   describe('multiple fragments document with no operations', () => {
     test(`import frag from '../../shared/fragments.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/fragment/multiDefault.js', opts)
-      let _graphqlTag, frag
+      let _graphqlTag, _graphqlTag2, frag
       eval(code)
       expect(nameOf(frag)).toBe('frag1')
     })
 
     test(`import { frag3, frag1, frag2 } from '../../shared/fragments.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/fragment/multiple.js', opts)
-      let _graphqlTag, frag1, frag2, frag3
+      let _graphqlTag, _graphqlTag2, frag1, frag2, frag3
       eval(code)
       expect(nameOf(frag1)).toBe('frag1')
       expect(nameOf(frag2)).toBe('frag2')

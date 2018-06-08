@@ -12,8 +12,13 @@ export default ({ types: t, template }) => ({
   manipulateOptions({ resolveModuleSource, plugins }) {
     resolve = resolveModuleSource || defaultResolve
 
-    const thisPlugin = plugins.find(p => p.key.indexOf('babel-plugin-import-graphql') !== -1)
-    if (thisPlugin.options.runtime) {
+    const thisPlugin = plugins.find(p => {
+      const key = p.key || p[0].key
+      return key.indexOf('babel-plugin-import-graphql') !== -1
+    })
+
+    const options = thisPlugin.options || thisPlugin[1]
+    if (options.runtime) {
       try {
         require('graphql-tag')
       } catch (e) {
@@ -57,7 +62,10 @@ export default ({ types: t, template }) => ({
 
           // Add the graphql-tag import to the first non-schema .graphql import in each .js file.
           if (opts.runtime && !seenJSFiles.has(jsFilename)) {
-            replacements = [...replacements, template(`import gql from 'graphql-tag'`)()]
+            replacements = [
+              ...replacements,
+              template(`import gql from 'graphql-tag'`, { sourceType: 'module' })()
+            ]
           }
 
           seenJSFiles.add(jsFilename)
@@ -80,7 +88,7 @@ export default ({ types: t, template }) => ({
 
         // Use to inline raw source when a schema-like file is detected.
         function buildSrcVarNode(graphqlSrc, importName) {
-          const buildNode = template('var IMPORT_NAME = SOURCE;')
+          const buildNode = template('var IMPORT_NAME = SOURCE;', { sourceType: 'module' })
           return buildNode({
             IMPORT_NAME: t.identifier(importName),
             SOURCE: t.stringLiteral(graphqlSrc)
@@ -94,13 +102,13 @@ export default ({ types: t, template }) => ({
               const expr = t.callExpression(t.identifier('gql'), [t.stringLiteral(print(value))])
               return t.objectProperty(t.stringLiteral(key), expr)
             })
-            return template('var IMPORT_NAME = SOURCE')({
+            return template('var IMPORT_NAME = SOURCE', { sourceType: 'module' })({
               IMPORT_NAME: t.identifier(importName),
               SOURCE: t.objectExpression(properties)
             })
           }
 
-          const buildNode = template('var IMPORT_NAME = gql(SOURCE);')
+          const buildNode = template('var IMPORT_NAME = gql(SOURCE);', { sourceType: 'module' })
           return buildNode({
             IMPORT_NAME: t.identifier(importName),
             SOURCE: t.stringLiteral(print(graphqlAST))
@@ -109,7 +117,7 @@ export default ({ types: t, template }) => ({
 
         // Use to inline the preprocessed AST object when the 'runtime' option is off.
         function buildASTVarNode(graphqlAST, importName) {
-          const buildNode = template('var IMPORT_NAME = AST;')
+          const buildNode = template('var IMPORT_NAME = AST;', { sourceType: 'module' })
           const astNode = t.valueToNode(JSON.parse(JSON.stringify(graphqlAST)))
           astNode._compact = true
           return buildNode({ IMPORT_NAME: t.identifier(importName), AST: astNode })
