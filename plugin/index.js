@@ -12,8 +12,8 @@ export default ({ types: t, template }) => ({
   manipulateOptions({ resolveModuleSource, plugins }) {
     resolve = resolveModuleSource || defaultResolve
 
-    const thisPlugin = plugins.find(p => p.key.indexOf('babel-plugin-import-graphql') !== -1)
-    if (thisPlugin.options.runtime) {
+    const thisPlugin = plugins.find(p => p[0].key.indexOf('babel-plugin-import-graphql') !== -1)
+    if (thisPlugin[0].options && thisPlugin[0].options.runtime) {
       try {
         require('graphql-tag')
       } catch (e) {
