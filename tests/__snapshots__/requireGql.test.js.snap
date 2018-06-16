@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parse schema file at runtime returns raw source text 1`] = `
+"schema {
+  query: Query
+}
+
+type Query {
+  test: String
+}
+"
+`;

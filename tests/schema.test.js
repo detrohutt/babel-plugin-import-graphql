@@ -1,5 +1,5 @@
 import path from 'path'
-import { transformWithPlugin, dedent } from './util'
+import { transformWithPlugin } from './util'
 
 describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
   describe('simple schema document', () => {
@@ -7,17 +7,7 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
       const { code } = transformWithPlugin('./fixtures/schema/simple/default.js', opts)
       let _graphqlTag, _graphqlTag2, schema
       eval(code)
-      expect(schema).toBe(
-        dedent`
-        schema {
-          query: Query
-        }
-
-        type Query {
-          test: String
-        }\n
-      `
-      )
+      expect(schema).toMatchSnapshot()
     })
   })
 })
