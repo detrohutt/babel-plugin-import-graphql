@@ -1,0 +1,8 @@
+#import "./levelOne.graphql"
+
+query full {
+  thing {
+    zero
+    ...levelOne
+  }
+}

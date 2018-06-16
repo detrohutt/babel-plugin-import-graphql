@@ -154,16 +154,4 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
       expect(nameOf(frag3)).toBe('frag3')
     })
   })
-
-  describe('single query document with imported fragment', () => {
-    test(`import fullQuery from '../../shared/fragments/nested/partial.graphql'`, () => {
-      const { code } = transformWithPlugin('./fixtures/imports/fragments/customImport.js', opts)
-      let _graphqlTag, _graphqlTag2, fullQuery
-      eval(code)
-      expect(fullQuery.kind).toBe('Document')
-      expect(fullQuery.definitions).toHaveLength(2)
-      expect(fullQuery.definitions[0].kind).toBe('OperationDefinition')
-      expect(fullQuery.definitions[1].kind).toBe('FragmentDefinition')
-    })
-  })
 })

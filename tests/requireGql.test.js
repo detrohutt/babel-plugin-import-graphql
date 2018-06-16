@@ -1,5 +1,7 @@
 import { join } from 'path'
 
+import { print } from 'graphql/language'
+
 import { requireGql } from '../plugin/requireGql'
 
 describe('parse client-side graphql file at runtime', () => {
@@ -38,11 +40,17 @@ describe('parse client-side graphql file at runtime', () => {
   })
 
   test('query with nested fragment', () => {
-    const full = requireGql('./fixtures/shared/fragments/nested/partial.graphql')
+    const full = requireGql('./fixtures/requireGql/fragments/nested/partial.graphql')
     expect(full.kind).toBe('Document')
     expect(full.definitions).toHaveLength(2)
     expect(full.definitions[0].kind).toBe('OperationDefinition')
     expect(full.definitions[1].kind).toBe('FragmentDefinition')
+  })
+
+  test('query with chained fragment imports', () => {
+    const full = requireGql('./fixtures/requireGql/fragments/chained/partial.graphql')
+    expect(full.kind).toBe('Document')
+    expect(print(full)).toMatchSnapshot()
   })
 
   test('query document indented with spaces', () => {

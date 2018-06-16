@@ -1,0 +1,6 @@
+#import "./levelTwo.graphql"
+
+fragment levelOne on Thing {
+  one
+  ...levelTwo
+}

@@ -1,5 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`parse client-side graphql file at runtime query with chained fragment imports 1`] = `
+"query full {
+  thing {
+    zero
+    ...levelOne
+  }
+}
+
+fragment levelOne on Thing {
+  one
+  ...levelTwo
+}
+
+fragment levelTwo on Thing {
+  two
+}
+"
+`;
+
 exports[`parse schema file at runtime concatenates multiple levels of #imported types 1`] = `
 "type LevelTwo {
   test: String!
