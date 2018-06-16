@@ -1,0 +1,3 @@
+fragment nestedFrag on Thing {
+  rest
+}

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`plugin options = {"runtime":true} simple schema document import schema from '../../shared/schema.graphql' 1`] = `
+"schema {
+  query: Query
+}
+
+type Query {
+  test: String
+}
+"
+`;
+
+exports[`plugin options = {} simple schema document import schema from '../../shared/schema.graphql' 1`] = `
+"schema {
+  query: Query
+}
+
+type Query {
+  test: String
+}
+"
+`;

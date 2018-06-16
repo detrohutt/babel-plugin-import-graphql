@@ -1,3 +1,0 @@
-fragment frag on Thing {
-  rest
-}

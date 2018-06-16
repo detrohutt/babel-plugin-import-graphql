@@ -3,6 +3,6 @@
 query full {
   thing {
     part
-    ...frag
+    ...nestedFrag
   }
 }

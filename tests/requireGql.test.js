@@ -38,17 +38,32 @@ describe('parse client-side graphql file at runtime', () => {
   })
 
   test('query with nested fragment', () => {
-    const full = requireGql('./fixtures/requireGql/fragment/nested/partial.graphql')
+    const full = requireGql('./fixtures/shared/fragments/nested/partial.graphql')
     expect(full.kind).toBe('Document')
     expect(full.definitions).toHaveLength(2)
     expect(full.definitions[0].kind).toBe('OperationDefinition')
     expect(full.definitions[1].kind).toBe('FragmentDefinition')
+  })
+
+  test('query document indented with spaces', () => {
+    const result = requireGql('./fixtures/requireGql/whitespace/spaces.graphql')
+    expect(result.kind).toBe('Document')
+  })
+
+  test('query document indented with tabs', () => {
+    const result = requireGql('./fixtures/requireGql/whitespace/tabs.graphql')
+    expect(result.kind).toBe('Document')
   })
 })
 
 describe('parse schema file at runtime', () => {
   test('returns raw source text', () => {
     const schema = requireGql('./fixtures/shared/schema.graphql')
+    expect(schema).toMatchSnapshot()
+  })
+
+  test('concatenates multiple levels of #imported types', () => {
+    const schema = requireGql('./fixtures/requireGql/customImport/chainedImportsSchema.graphql')
     expect(schema).toMatchSnapshot()
   })
 })

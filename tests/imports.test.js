@@ -2,6 +2,15 @@ import path from 'path'
 import { transformWithPlugin, nameOf } from './util'
 
 describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
+  describe('simple schema document', () => {
+    test(`import schema from '../../shared/schema.graphql'`, () => {
+      const { code } = transformWithPlugin('./fixtures/imports/schema/default.js', opts)
+      let _graphqlTag, _graphqlTag2, schema
+      eval(code)
+      expect(schema).toMatchSnapshot()
+    })
+  })
+
   describe('single named query document', () => {
     test(`import namedQuery from '../../shared/named.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/named/default.js', opts)
@@ -50,7 +59,7 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
 
   describe('multiple operations document with fragment at top', () => {
     test(`import { notAnOperation } from '../../shared/multiple.graphql'`, () => {
-      const { code } = transformWithPlugin('./fixtures/imports/fragment/mixed.js', opts)
+      const { code } = transformWithPlugin('./fixtures/imports/fragments/mixed.js', opts)
       let _graphqlTag, _graphqlTag2, notAnOperation
       eval(code)
       expect(notAnOperation.kind).toBe('Document')
@@ -119,8 +128,8 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
   })
 
   describe('single fragment document', () => {
-    test(`import frag from '../../shared/fragment.graphql'`, () => {
-      const { code } = transformWithPlugin('./fixtures/imports/fragment/simple.js', opts)
+    test(`import frag from '../../shared/fragments/fragment.graphql'`, () => {
+      const { code } = transformWithPlugin('./fixtures/imports/fragments/simple.js', opts)
       let _graphqlTag, _graphqlTag2, frag
       eval(code)
       expect(frag.kind).toBe('Document')
@@ -129,20 +138,32 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
   })
 
   describe('multiple fragments document with no operations', () => {
-    test(`import frag from '../../shared/fragments.graphql'`, () => {
-      const { code } = transformWithPlugin('./fixtures/imports/fragment/multiDefault.js', opts)
+    test(`import frag from '../../shared/fragments/fragments.graphql'`, () => {
+      const { code } = transformWithPlugin('./fixtures/imports/fragments/multiDefault.js', opts)
       let _graphqlTag, _graphqlTag2, frag
       eval(code)
       expect(nameOf(frag)).toBe('frag1')
     })
 
-    test(`import { frag3, frag1, frag2 } from '../../shared/fragments.graphql'`, () => {
-      const { code } = transformWithPlugin('./fixtures/imports/fragment/multiple.js', opts)
+    test(`import { frag3, frag1, frag2 } from '../../shared/fragments/fragments.graphql'`, () => {
+      const { code } = transformWithPlugin('./fixtures/imports/fragments/multiple.js', opts)
       let _graphqlTag, _graphqlTag2, frag1, frag2, frag3
       eval(code)
       expect(nameOf(frag1)).toBe('frag1')
       expect(nameOf(frag2)).toBe('frag2')
       expect(nameOf(frag3)).toBe('frag3')
+    })
+  })
+
+  describe('single query document with imported fragment', () => {
+    test(`import fullQuery from '../../shared/fragments/nested/partial.graphql'`, () => {
+      const { code } = transformWithPlugin('./fixtures/imports/fragments/customImport.js', opts)
+      let _graphqlTag, _graphqlTag2, fullQuery
+      eval(code)
+      expect(fullQuery.kind).toBe('Document')
+      expect(fullQuery.definitions).toHaveLength(2)
+      expect(fullQuery.definitions[0].kind).toBe('OperationDefinition')
+      expect(fullQuery.definitions[1].kind).toBe('FragmentDefinition')
     })
   })
 })
