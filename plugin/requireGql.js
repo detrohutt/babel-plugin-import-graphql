@@ -3,8 +3,8 @@ import path, { isAbsolute, join, dirname } from 'path'
 import gql from 'graphql-tag'
 
 import { createDocPerOp } from './multiOp'
-
-const newlinePattern = /(\r\n|\r|\n)+/
+import { newlinePattern } from './constants'
+import * as customImport from './customImport'
 
 export const defaultResolve = (src, file) => path.resolve(dirname(file), src)
 
@@ -50,27 +50,15 @@ function createDoc(source, filepath, resolve) {
 
   return {
     processFragments() {
-      processImports(getImportStatements(source), filepath)
-
-      function getImportStatements(src) {
-        return src.split(newlinePattern).filter(line => line.startsWith('#import'))
-      }
-
-      function processImports(imports, relFile) {
-        imports.forEach(statement => {
-          const fragmentPath = statement.split(/[\s\n]+/g)[1].slice(1, -1)
-          const absFragmentPath = resolve(fragmentPath, relFile)
-          const fragmentSource = readFileSync(absFragmentPath.replace(/'/g, '')).toString()
-          const subFragments = getImportStatements(fragmentSource)
-          if (subFragments.length > 0) processImports(subFragments, absFragmentPath)
-          // prettier-ignore
-          fragmentDefs = [...gql`${fragmentSource}`.definitions, ...fragmentDefs]
-        })
-      }
+      // Resolve all #import statements (fragments) recursively and add them to the definitions
+      customImport.getFilepaths(source, filepath, resolve).forEach(fp => {
+        fragmentDefs = customImport
+          .getSources(fp)
+          .reduce((acc, src) => [...acc, ...gql(src).definitions], fragmentDefs)
+      })
     },
     parse() {
-      // prettier-ignore
-      const parsedAST = gql`${source}`
+      const parsedAST = gql(source)
       parsedAST.definitions = [...parsedAST.definitions, ...fragmentDefs]
       ast = parsedAST
     },
