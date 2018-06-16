@@ -1,0 +1,9 @@
+#import "./levelOne.graphql"
+
+type Query {
+  levelOne: LevelOne
+}
+
+schema {
+  query: Query
+}

@@ -1,5 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`parse schema file at runtime concatenates multiple levels of #imported types 1`] = `
+"type LevelTwo {
+  test: String!
+}
+
+type LevelOne {
+  levelTwo: LevelTwo
+}
+
+type Query {
+  levelOne: LevelOne
+}
+schema {
+  query: Query
+}
+"
+`;
+
 exports[`parse schema file at runtime returns raw source text 1`] = `
 "schema {
   query: Query

@@ -13,7 +13,17 @@ export const requireGql = (filepath, { resolve = defaultResolve, nowrap = true }
   const source = readFileSync(filepath).toString()
 
   // If the file doesn't contain ops return raw text, else parse and return docsMap object.
-  if (isSchemaLike(source)) return source
+  if (isSchemaLike(source)) {
+    const imports = customImport.getFilepaths(source, filepath, resolve)
+
+    if (imports.length === 0) return source
+
+    // Resolve all #import statements (types, etc) recursively and concat them to the main source.
+    return imports
+      .reduce((acc, fp) => [...acc, ...customImport.getSources(fp, resolve, [source])], [])
+      .map(stripImportStatements)
+      .join('')
+  }
 
   const doc = processDoc(createDoc(source, filepath, resolve))
   const docsMap = createDocPerOp(doc)
@@ -44,6 +54,13 @@ function isSchemaLike(source) {
   return !operationsPattern.test(content[0])
 }
 
+function stripImportStatements(src) {
+  return src
+    .split(newlinePattern)
+    .filter(line => !line.startsWith('#import'))
+    .join('')
+}
+
 function createDoc(source, filepath, resolve) {
   let ast = null
   let fragmentDefs = []
@@ -53,7 +70,7 @@ function createDoc(source, filepath, resolve) {
       // Resolve all #import statements (fragments) recursively and add them to the definitions
       customImport.getFilepaths(source, filepath, resolve).forEach(fp => {
         fragmentDefs = customImport
-          .getSources(fp)
+          .getSources(fp, resolve)
           .reduce((acc, src) => [...acc, ...gql(src).definitions], fragmentDefs)
       })
     },

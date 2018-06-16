@@ -10,9 +10,12 @@ export function getFilepaths(src, relFile, resolve) {
   })
 }
 
-export function getSources(filepath, acc = []) {
+export function getSources(filepath, resolve, acc = []) {
   const importSrc = readFileSync(filepath.replace(/'/g, '')).toString()
-  const nestedPaths = getFilepaths(importSrc, filepath)
-  const srcs = nestedPaths.length > 0 ? nestedPaths.map(fp => getSources(fp, acc)) : [importSrc]
-  return [...acc, ...srcs]
+  const nestedPaths = getFilepaths(importSrc, filepath, resolve)
+  const srcs =
+    nestedPaths.length > 0
+      ? nestedPaths.reduce((srcArr, fp) => [...srcArr, ...getSources(fp, resolve, [importSrc])], [])
+      : [importSrc]
+  return [...srcs, ...acc]
 }
