@@ -88,7 +88,10 @@ export default graphql(myQuery)(myComponent)
 
 ### Schema files
 
-Only default import syntax is supported, and the entire file will be inlined as raw text. If there are specific features you'd like to see for use with schema files, let me know.
+Feature | Description
+-|-
+Default import | The entire source code for the file will act as the default export.
+\#import syntax | Types, etc. in one GraphQL file can be imported into another GraphQL file using this syntax: `#import "./types.graphql"`. These imports will be resolved recursively to any reasonable depth of files. Currently, all content in the named file will be imported and there is no way to import specific types. If you want that behavior, you can store a single type in each file.
 
 ### Operation/fragment files
 
@@ -99,7 +102,7 @@ Feature | Description
 Multiple operations/fragments per file | Multiple operations (queries/mutations/subscriptions) and/or fragments can be placed in a single file. However, in this case you cannot use unnamed operations/fragments. For example, `query { test }` would need to be `query someName { test }`.
 Default import | The first or only operation/fragment in a file will act as the default export. However, for backwards compatibility reasons, if there are both operations and fragments in a file, the first operation will act as the default export.
 Named imports | All operations/fragments, **including the default**, act as named exports.
-GraphQL file fragment imports | Fragments in one GraphQL file can be imported into another GraphQL file using this syntax: `#import "./fragment.graphql"`. These imports will be resolved recursively to any reasonable depth of files. Currently, all fragments in the named file will be imported and there is no way to import specific fragments. If you want that behavior, you can store a single fragment in each file.
+\#import syntax | Fragments in one GraphQL file can be imported into another GraphQL file using this syntax: `#import "./fragment.graphql"`. These imports will be resolved recursively to any reasonable depth of files. Currently, all fragments in the named file will be imported and there is no way to import specific fragments. If you want that behavior, you can store a single fragment in each file.
 
 ## Full example
 
@@ -176,10 +179,10 @@ export default graphql(myImportedQuery)(ProductsPage)
 
 ## Options
 
-Option | Description
--|-
-`nodePath` | _Intended primarily for use with [react-app-rewire-inline-import-graphql-ast](https://github.com/detrohutt/react-app-rewire-inline-import-graphql-ast)_ Takes a string like the [`NODE_PATH`](https://nodejs.org/api/modules.html#modules_loading_from_the_global_folders) environment variable and is used to allow resolution of absolute paths to your `.gql`/`.graphql` files. Note this currently is NOT respected for fragment imports. If you already have your `NODE_PATH` variable set in your environment, you don't need to set this option.
-`runtime` | Instead of inlining the parsed AST object, which is very large, this option inlines your GraphQL source code along with an import of the `gql` function from `graphql-tag` and parses your GraphQL source code with `gql` at runtime. **This option requires `graphql-tag` to be installed as a peerDependency.**
+Option | Type | Default | Description
+-|-|-|-
+`nodePath` | String | value of NODE_PATH environment variable | **Intended for use with [react-app-rewire-inline-import-graphql-ast](https://github.com/detrohutt/react-app-rewire-inline-import-graphql-ast)** -- Used to allow resolution of absolute paths to your `.gql`/`.graphql` files. If you already have your `NODE_PATH` variable set in your environment, you don't need to set this option. **Not** currently respected by `#import` syntax.
+`runtime` | Boolean | false | **Enabling this option requires `graphql-tag` to be installed as a peerDependency.** -- Instead of inlining the parsed AST object, which is very large, this option inlines your GraphQL source code along with an import of the `gql` function from `graphql-tag` and parses your GraphQL source code with `gql` at runtime.
 
 ## For users of create-react-app
 

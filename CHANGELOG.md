@@ -1,5 +1,16 @@
 # ChangeLog
 
+## v2.6.0 (June 16, 2018)
+
+### Features
+
+- Add support for #import syntax in schema files
+
+### Maintenance
+
+- Improve Options table in README
+- Refactor existing tests and add new tests
+
 ## v2.5.2 (June 8, 2018)
 
 ### Fixes
