@@ -1,0 +1,4 @@
+type LevelOneBis {
+  levelTwo: LevelTwo
+  levelTwoBis: LevelTwoBis
+}

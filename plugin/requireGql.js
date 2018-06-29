@@ -19,10 +19,12 @@ export const requireGql = (filepath, { resolve = defaultResolve, nowrap = true }
     if (imports.length === 0) return source
 
     // Resolve all #import statements (types, etc) recursively and concat them to the main source.
-    return imports
-      .reduce((acc, fp) => [...acc, ...customImport.getSources(fp, resolve, [source])], [])
-      .map(stripImportStatements)
-      .join('')
+    return (
+      imports
+        .reduce((acc, fp) => [...acc, ...customImport.getSources(fp, resolve, [])], [])
+        .map(stripImportStatements)
+        .join('') + stripImportStatements(source)
+    )
   }
 
   const doc = processDoc(createDoc(source, filepath, resolve))

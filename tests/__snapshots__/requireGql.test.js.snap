@@ -32,6 +32,10 @@ type LevelOne {
   levelTwo: LevelTwo
   levelTwoBis: LevelTwoBis
 }
+type LevelOneBis {
+  levelTwo: LevelTwo
+  levelTwoBis: LevelTwoBis
+}
 
 type Query {
   levelOne: LevelOne

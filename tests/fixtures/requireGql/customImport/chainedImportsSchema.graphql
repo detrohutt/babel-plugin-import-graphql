@@ -1,4 +1,5 @@
 #import "./levelOne.graphql"
+#import "./levelOneBis.graphql"
 
 type Query {
   levelOne: LevelOne
