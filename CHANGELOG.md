@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v2.6.1 (June 29, 2018)
+
+### Fixes
+
+- Fix duplicate code when using multiple imports in one schema file (Thanks @gregorycuellar)
+
 ## v2.6.0 (June 16, 2018)
 
 ### Features
