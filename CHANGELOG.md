@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v2.6.2 (June 29, 2018)
+
+### Fixes
+
+- Continue fixing bug with multiple imports in a schema file (Thanks @gregorycuellar)
+
 ## v2.6.1 (June 29, 2018)
 
 ### Fixes
