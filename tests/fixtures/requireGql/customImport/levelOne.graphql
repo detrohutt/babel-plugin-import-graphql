@@ -1,5 +1,7 @@
 #import "./levelTwo.graphql"
+#import "./levelTwoBis.graphql"
 
 type LevelOne {
   levelTwo: LevelTwo
+  levelTwoBis: LevelTwoBis
 }

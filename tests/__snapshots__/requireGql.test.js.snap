@@ -23,9 +23,14 @@ exports[`parse schema file at runtime concatenates multiple levels of #imported 
 "type LevelTwo {
   test: String!
 }
+type LevelTwoBis {
+  test: String!
+}
+
 
 type LevelOne {
   levelTwo: LevelTwo
+  levelTwoBis: LevelTwoBis
 }
 
 type Query {
