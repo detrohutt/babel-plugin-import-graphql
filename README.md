@@ -1,5 +1,5 @@
 [![npm Version](https://img.shields.io/npm/v/babel-plugin-import-graphql.svg)](https://www.npmjs.com/package/babel-plugin-import-graphql)
-[![npm Downloads](https://img.shields.io/npm/dt/babel-plugin-inline-import-graphql-ast.svg)](https://www.npmjs.com/package/babel-plugin-inline-import-graphql-ast)
+[![npm Downloads](https://img.shields.io/npm/dm/babel-plugin-import-graphql.svg)](https://www.npmjs.com/package/babel-plugin-import-graphql)
 [![npm License](https://img.shields.io/npm/l/babel-plugin-import-graphql.svg)](https://www.npmjs.com/package/babel-plugin-import-graphql)
 [![donate](https://img.shields.io/badge/donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3AYURHRU7PMCL)
 
