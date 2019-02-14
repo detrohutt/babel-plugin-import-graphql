@@ -17,8 +17,11 @@ export default ({ types: t, template }) => ({
       exit(curPath, { opts, file }) {
         const importPath = curPath.node.source.value
         const jsFilename = file.opts.filename
+        let { extensions = [] } = opts
 
-        if (importPath.endsWith('.graphql') || importPath.endsWith('.gql')) {
+        extensions = [...extensions, '.graphql', '.gql']
+
+        if (extensions.some(extension => importPath.endsWith(extension))) {
           if (opts.runtime) {
             try {
               require('graphql-tag')
