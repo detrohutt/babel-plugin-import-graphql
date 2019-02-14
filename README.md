@@ -183,6 +183,8 @@ Option | Type | Default | Description
 -|-|-|-
 `nodePath` | String | value of NODE_PATH environment variable | **Intended for use with [react-app-rewire-inline-import-graphql-ast](https://github.com/detrohutt/react-app-rewire-inline-import-graphql-ast)** -- Used to allow resolution of absolute paths to your `.gql`/`.graphql` files. If you already have your `NODE_PATH` variable set in your environment, you don't need to set this option. **Not** currently respected by `#import` syntax.
 `runtime` | Boolean | false | **Enabling this option requires `graphql-tag` to be installed as a peerDependency.** -- Instead of inlining the parsed AST object, which is very large, this option inlines your GraphQL source code along with an import of the `gql` function from `graphql-tag` and parses your GraphQL source code with `gql` at runtime.
+`extensions` | Array | [] | Enables loading GraphQL SDL files that have a custom extension, e.g. '.prisma' 
+
 
 ## For users of create-react-app
 
