@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v2.7.0 (March 3, 2019)
+
+### Features
+
+- Add `extensions` option to allow parsing custom file types like `.prisma` (:clap: @DaBs)
+
 ## v2.6.2 (June 29, 2018)
 
 ### Fixes
