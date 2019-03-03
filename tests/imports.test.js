@@ -127,6 +127,18 @@ describe.each([{ runtime: true }, {}])('plugin options = %j', opts => {
     })
   })
 
+  describe('non-standard extension', () => {
+    test(`import extension from 'extension.graph'`, () => {
+      const { code } = transformWithPlugin('./fixtures/imports/named/extension.js', {
+        ...opts,
+        extensions: ['.graph']
+      })
+      let _graphqlTag, _graphqlTag2, extension
+      eval(code)
+      expect(extension.kind).toBe('Document')
+    })
+  })
+
   describe('single fragment document', () => {
     test(`import frag from '../../shared/fragments/fragment.graphql'`, () => {
       const { code } = transformWithPlugin('./fixtures/imports/fragments/simple.js', opts)
