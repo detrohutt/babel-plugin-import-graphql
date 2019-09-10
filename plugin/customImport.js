@@ -1,13 +1,19 @@
 import { readFileSync } from 'fs'
 
-import { newlinePattern } from './constants'
+import { newlinePattern, importPattern } from './constants'
 
 export function getFilepaths(src, relFile, resolve) {
-  const imports = src.split(newlinePattern).filter(line => line.startsWith('#import'))
-  return imports.map(statement => {
-    const importPath = statement.split(/[\s\n]+/g)[1].slice(1, -1)
-    return resolve(importPath, relFile)
-  })
+  return src.split(newlinePattern).reduce(
+    (acc, line) => {
+      const matches = importPattern.exec(line)
+      if (matches) {
+        const [, importPath] = matches
+        acc.push(resolve(importPath, relFile))
+      }
+      return acc
+    },
+    []
+  )
 }
 
 export function getSources(filepath, resolve, acc = []) {
