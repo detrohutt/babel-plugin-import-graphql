@@ -22,9 +22,9 @@ export function getSources(filepath, resolve, acc = []) {
   const srcs =
     nestedPaths.length > 0
       ? [
-          ...nestedPaths.reduce((srcArr, fp) => [...srcArr, ...getSources(fp, resolve, [])], []),
-          importSrc
-        ]
+        ...nestedPaths.reduce((srcArr, fp) => [...srcArr, ...getSources(fp, resolve, [])], []),
+        importSrc
+      ]
       : [importSrc]
   return [...srcs, ...acc]
 }
