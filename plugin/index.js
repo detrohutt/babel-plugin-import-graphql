@@ -17,7 +17,7 @@ export default ({ types: t, template }) => ({
       exit(curPath, { opts, file }) {
         const importPath = curPath.node.source.value
         const jsFilename = file.opts.filename
-        let { extensions = [] } = opts
+        let { extensions = [], emitDeclarations = false } = opts
 
         extensions = [...extensions, '.graphql', '.gql']
 
@@ -40,7 +40,7 @@ export default ({ types: t, template }) => ({
           // Analyze the file, returning one of the following...
           // For schema-like files: string - the GraphQL source code
           // For op/frag files: object - map of names to GraphQL Documents
-          const result = requireGql(absPath, { resolve, nowrap: false })
+          const result = requireGql(absPath, { resolve, nowrap: false, emitDeclarations })
 
           const importNames = curPath.node.specifiers
           if (typeof result === 'string') {

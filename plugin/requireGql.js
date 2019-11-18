@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs'
+import { readFileSync, writeFileSync } from 'fs'
 import path, { isAbsolute, join, dirname } from 'path'
 import gql from 'graphql-tag'
 
@@ -8,7 +8,10 @@ import * as customImport from './customImport'
 
 export const defaultResolve = (src, file) => path.resolve(dirname(file), src)
 
-export const requireGql = (filepath, { resolve = defaultResolve, nowrap = true } = {}) => {
+export const requireGql = (
+  filepath,
+  { resolve = defaultResolve, nowrap = true, emitDeclarations = false } = {}
+) => {
   filepath = isAbsolute(filepath) ? filepath : join(callerDirname(), filepath)
   const source = readFileSync(filepath).toString()
 
@@ -29,7 +32,39 @@ export const requireGql = (filepath, { resolve = defaultResolve, nowrap = true }
 
   const doc = processDoc(createDoc(source, filepath, resolve))
   const docsMap = createDocPerOp(doc)
+
+  if (emitDeclarations) {
+    writeDTs(filepath, docsMap)
+  }
+
   return nowrap && !doc.isMultiOp ? docsMap.default : docsMap
+}
+
+function writeDTs(filepath, docsMap) {
+  const defLines = Object.keys(docsMap).map(key => {
+    const commentBody = docsMap[key].loc.source.body
+      .trim()
+      .split('\n')
+      .map(line => ` * ${line}`)
+      .join('\n')
+
+    const docComment = `/**\n * \`\`\`gql\n${commentBody}\n * \`\`\`\n */\n`
+
+    if (key === 'default') {
+      return `${docComment}declare const _ = ${JSON.stringify(
+        docsMap[key] /* null, 2 */
+      )} as const;\nexport default _;\n`
+    }
+    return `${docComment}export const ${key} = ${JSON.stringify(
+      docsMap[key] /* null, 2 */
+    )} as const;\n`
+  })
+
+  defLines.unshift(`/**\n * Generated at ${new Date().toISOString()}\n */\n`)
+
+  defLines.push('')
+
+  writeFileSync(filepath + '.d.ts', defLines.join('\n'))
 }
 
 function callerDirname() {
