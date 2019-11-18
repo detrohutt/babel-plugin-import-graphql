@@ -3,7 +3,7 @@ import path, { isAbsolute, join, dirname } from 'path'
 import gql from 'graphql-tag'
 
 import { createDocPerOp } from './multiOp'
-import { newlinePattern } from './constants'
+import { newlinePattern, importPattern } from './constants'
 import * as customImport from './customImport'
 
 export const defaultResolve = (src, file) => path.resolve(dirname(file), src)
@@ -57,10 +57,7 @@ function isSchemaLike(source) {
 }
 
 function stripImportStatements(src) {
-  return src
-    .split(newlinePattern)
-    .filter(line => !line.startsWith('#import'))
-    .join('')
+  return src.replace(importPattern, '')
 }
 
 function createDoc(source, filepath, resolve) {
