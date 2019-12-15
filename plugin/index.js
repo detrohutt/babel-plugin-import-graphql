@@ -33,7 +33,7 @@ export default ({ types: t, template }) => ({
           // Find the file, using node resolution/NODE_PATH if necessary.
           const fallbackPaths = opts.nodePath
             ? opts.nodePath.split(delimiter)
-            : process.env.NODE_PATH
+            : [process.env.NODE_PATH]
           let absPath = resolve(importPath, jsFilename)
           if (!existsSync(absPath)) absPath = require.resolve(importPath, { paths: fallbackPaths })
 
