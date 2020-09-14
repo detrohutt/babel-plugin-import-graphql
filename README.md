@@ -63,7 +63,9 @@ In `.babelrc` file:
 }
 ```
 
-Each time you modify a GraphQL file, the `node_modules/.cache/babel-loader` folder must be cleared for the changes to take effect. I recommend prepending the relevant script in your `package.json` and rerunning the script when you change a GraphQL file:
+Each time you modify a GraphQL file, the cache must be cleared for the changes to take effect.
+
+If using node then the `node_modules/.cache/babel-loader` folder must be cleared. I recommend prepending the relevant script in your `package.json` and rerunning the script when you change a GraphQL file:
 
 ```JSON
 {
@@ -71,6 +73,12 @@ Each time you modify a GraphQL file, the `node_modules/.cache/babel-loader` fold
     "start": "rm -rf ./node_modules/.cache/babel-loader && node index.js"
   }
 }
+```
+
+If using React Native then the metro cache must be reset every time you change a GraphQL file:
+
+```
+react-native start --reset-cache
 ```
 
 > Note: Windows users would need to use `rimraf` or another solution in place of `rm -rf`.
