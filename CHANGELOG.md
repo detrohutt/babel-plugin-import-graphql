@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v2.8.1 (January 2, 2021)
+
+### Fixes
+
+- Update lock files to patch vulnerabilites in production dependencies
+
 ## v2.8.0 (January 2, 2021)
 
 ### Features
