@@ -1,4 +1,4 @@
-import { delimiter } from 'path'
+import { delimiter, join } from 'path'
 import { existsSync } from 'fs'
 
 import { print } from 'graphql/language'
@@ -35,7 +35,11 @@ export default ({ types: t, template }) => ({
             ? opts.nodePath.split(delimiter)
             : [process.env.NODE_PATH]
           let absPath = resolve(importPath, jsFilename)
-          if (!existsSync(absPath)) absPath = require.resolve(importPath, { paths: fallbackPaths })
+          if (!existsSync(absPath)) {
+            absPath = fallbackPaths
+              .map(fallbackPath => join(fallbackPath, importPath))
+              .find(altPath => existsSync(altPath))
+          }
 
           // Analyze the file, returning one of the following...
           // For schema-like files: string - the GraphQL source code
