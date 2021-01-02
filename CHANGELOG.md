@@ -1,5 +1,21 @@
 # ChangeLog
 
+## v2.8.0 (January 2, 2021)
+
+### Features
+
+- Support `import * from "..."` syntax (Thanks @dfrankland)
+- Add `emitDeclarations` option to emit `*.d.ts` files next to source graphql files (Thanks @langpavel)
+
+### Fixes
+
+- Maintain support with node v12.3.0+ (Thanks @orkaplan)
+- Remove dependence on `require.resolve` to fix issues with node v12 (Thanks @VojtaSim)
+
+### Maintenance
+
+- Stop linting the `build` folder in editors
+
 ## v2.7.0 (March 3, 2019)
 
 ### Features
