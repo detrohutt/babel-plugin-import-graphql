@@ -45,19 +45,23 @@ Congratulations, you're all set!
 
 ## Prerequisites
 
-* `babel-core@^6.26.3` or `@babel/core@^7.0.0-beta.40` (Lower betas may work but weren't tested)
+* `babel-core@^7.20.7` or `@babel/core@^7.0.0-beta.49` (Lower betas may work but weren't tested)
 
-* `graphql-tag@^2.1.0` (only if using the `runtime` option described below)
+* `graphql-tag@^2.9.2` (only if using the `runtime` option described below)
 
 ## Install
 
 ```bash
-$ yarn add -D babel-plugin-import-graphql
+yarn add -D babel-plugin-import-graphql
+```
+or
+```bash
+npm i -D babel-plugin-import-graphql
 ```
 
 In `.babelrc` file:
 
-```JSON
+```json
 {
   "plugins": ["import-graphql"]
 }
@@ -67,7 +71,7 @@ Each time you modify a GraphQL file, the cache must be cleared for the changes t
 
 If using node then the `node_modules/.cache/babel-loader` folder must be cleared. I recommend prepending the relevant script in your `package.json` and rerunning the script when you change a GraphQL file:
 
-```JSON
+```json
 {
   "scripts": {
     "start": "rm -rf ./node_modules/.cache/babel-loader && node index.js"
@@ -85,7 +89,7 @@ react-native start --reset-cache
 
 ## Basic Usage
 
-```JavaScript
+```js
 ...
 import myQuery from './query.graphql'
 ...
@@ -118,7 +122,7 @@ Named imports | All operations/fragments, **including the default**, act as name
 
 ProductsPage.js
 
-```JSX
+```jsx
 import React, { Component } from 'react'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
@@ -148,7 +152,7 @@ export default graphql(productsQuery)(ProductsPage)
 
 productFragment.graphql
 
-```GraphQL
+```gql
 fragment productFragment on Product {
   name
   description
@@ -158,7 +162,7 @@ fragment productFragment on Product {
 
 productsQuery.graphql
 
-```GraphQL
+```gql
 #import "./productFragment.graphql"
 query products {
   products {
@@ -170,7 +174,7 @@ query products {
 
 ProductsPage.js
 
-```JSX
+```jsx
 import React, { Component } from 'react'
 import { graphql } from 'react-apollo'
 import myImportedQuery from './productsQuery.graphql'
